@@ -9,9 +9,9 @@ import { {{pascalCase resource}}Store } from "../index";
  * Action update{{pascalCase resource}}
  * Met à jour {{#if (isFeminine resource)}}une{{else}}un{{/if}} {{lowerCase resource}} existant{{#if (isFeminine resource)}}e{{/if}}
  * 
- * @param {{{pascalCase resource}}Store} store - Instance du store Pinia
- * @param {{ elementId, data }} - ID et données de mise à jour
- * @returns {Promise<{{pascalCase resource}}Model | ApiError>}
+ * @param \{{{{pascalCase resource}}Store}} store - Instance du store Pinia
+ * @param \{{ elementId, data }} - ID et données de mise à jour
+ * @returns \{{Promise<{{pascalCase resource}}Model | ApiError>}}
  */
 export async function update{{pascalCase resource}}(
   store: {{pascalCase resource}}Store,

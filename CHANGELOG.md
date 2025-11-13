@@ -15,6 +15,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GraphQL support
 - REST API backend generator
 
+## [1.2.6] - 2025-11-13
+
+### 🐛 Critical Fix
+- **Fixed Handlebars Parse Error in Action Templates**: Escaped curly braces in JSDoc comments
+  - Changed `@param {{{pascalCase resource}}Store}` to `@param \{{{{pascalCase resource}}Store}}`
+  - Handlebars was interpreting triple braces as raw output syntax
+  - Fixes "Expecting 'CLOSE_UNESCAPED'" parse errors in all action templates
+  - Affected templates: action-add, action-find, action-update, action-remove, action-findOne, action-create, action-updateOne, action-delete, action-set, action-custom
+
 ## [1.2.5] - 2025-11-13
 
 ### 🐛 Bug Fixes

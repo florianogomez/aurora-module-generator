@@ -5,9 +5,9 @@ import { {{camelCase resource}}StoreDefinition } from "../definition";
  * Action {{camelCase actionName}}
  * Custom action for {{lowerCase resource}}
  * 
- * @param {{{pascalCase resource}}Store} store - The Pinia store instance
- * @param {Object} [payload={}] - Optional parameters
- * @returns {Promise<void>}
+ * @param \{{{{pascalCase resource}}Store}} store - The Pinia store instance
+ * @param \{{Object}} [payload={}] - Optional parameters
+ * @returns \{{Promise<void>}}
  */
 export async function {{actionName}}(store: {{pascalCase resource}}Store, payload = {}) {
   store.loading = true;
