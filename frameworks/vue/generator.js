@@ -712,6 +712,14 @@ async function main() {
 	// Charger la configuration utilisateur
 	console.log(`\n${config.messages.package} Chargement de la configuration...`);
 	const finalConfig = await loadAndMergeConfig(config);
+	
+	// Afficher les chemins configurés
+	if (finalConfig.userConfigPath) {
+		console.log(`${config.messages.info} Configuration chargée depuis: ${path.basename(finalConfig.userConfigPath)}`);
+	} else {
+		console.log(`${config.messages.info} Aucune configuration trouvée, utilisation des valeurs par défaut`);
+	}
+	console.log(`${config.messages.folder} Génération dans: ${finalConfig.paths.modules}`);
 
 	// Génération
 	const generator = new ModuleGenerator(options, finalConfig);

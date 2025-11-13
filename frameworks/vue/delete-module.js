@@ -17,6 +17,7 @@ import inquirer from "inquirer";
 import { fileURLToPath } from "url";
 import { pascalCase, camelCase, kebabCase, pluralize } from "./helpers.js";
 import config from "./config.js";
+import { loadAndMergeConfig } from "./config-loader.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -118,11 +119,11 @@ function removeInterfaceExports(resource) {
 /**
  * Supprime le dossier du module
  */
-function deleteModuleFolder(resource) {
+function deleteModuleFolder(resource, finalConfig) {
 	console.log(`\n${config.messages.clean} Suppression du dossier du module...`);
 
 	const pluralResource = pluralize(kebabCase(resource));
-	const modulePath = path.join(config.paths.modules, pluralResource);
+	const modulePath = path.join(finalConfig.paths.modules, pluralResource);
 
 	if (!fs.existsSync(modulePath)) {
 		console.warn(`  ${config.messages.warning} Dossier non trouvé: ${modulePath}`);
@@ -154,8 +155,12 @@ async function main() {
 		resource = inputResource;
 	}
 
+	// Charger la configuration utilisateur
+	console.log(`\n${config.messages.package} Chargement de la configuration...`);
+	const finalConfig = await loadAndMergeConfig(config);
+
 	const pluralResource = pluralize(kebabCase(resource));
-	const modulePath = path.join(config.paths.modules, pluralResource);
+	const modulePath = path.join(finalConfig.paths.modules, pluralResource);
 
 	console.log(`\nℹ️  Ressource: ${resource}`);
 	console.log(`📁 Chemin: ${modulePath}`);
@@ -177,7 +182,7 @@ async function main() {
 
 	// Suppression
 	try {
-		deleteModuleFolder(resource);
+		deleteModuleFolder(resource, finalConfig);
 		removeInterfaceExports(resource);
 		removeStoreKey(resource);
 		unregisterStoreFromPinia(resource);

@@ -30,8 +30,7 @@ export async function loadUserConfig(cwd = process.cwd()) {
 				if (configFile.endsWith(".json")) {
 					const content = fs.readFileSync(configPath, "utf-8");
 					const config = JSON.parse(content);
-					console.log(`✅ Configuration chargée depuis: ${configFile}`);
-					return config;
+					return { config, configFile };
 				}
 
 				// Fichiers JavaScript/ESM
@@ -41,8 +40,7 @@ export async function loadUserConfig(cwd = process.cwd()) {
 					const moduleUrl = `${fileUrl}?t=${Date.now()}`;
 					const module = await import(moduleUrl);
 					const config = module.default || module;
-					console.log(`✅ Configuration chargée depuis: ${configFile}`);
-					return config;
+					return { config, configFile };
 				}
 			} catch (error) {
 				console.warn(`⚠️  Erreur lors du chargement de ${configFile}:`, error.message);
@@ -123,20 +121,17 @@ export function mergeConfig(defaultConfig, userConfig) {
  * @returns {Promise<object>} Configuration finale
  */
 export async function loadAndMergeConfig(defaultConfig, cwd = process.cwd()) {
-	const userConfig = await loadUserConfig(cwd);
+	const result = await loadUserConfig(cwd);
 
-	if (!userConfig) {
-		console.log("ℹ️  Aucune configuration trouvée, utilisation des valeurs par défaut");
-		console.log(`📁 Génération dans: ${defaultConfig.paths.modules}`);
-		return defaultConfig;
+	if (!result) {
+		return { ...defaultConfig, userConfigPath: null };
 	}
 
+	const { config: userConfig, configFile } = result;
 	const resolvedUserConfig = resolveConfigPaths(userConfig, cwd);
 	const mergedConfig = mergeConfig(defaultConfig, resolvedUserConfig);
 
-	console.log(`📁 Répertoire de génération: ${mergedConfig.paths.modules}`);
-
-	return mergedConfig;
+	return { ...mergedConfig, userConfigPath: configFile };
 }
 
 export default {

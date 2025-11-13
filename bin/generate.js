@@ -81,6 +81,13 @@ async function main() {
 		
 		const finalConfig = await loadAndMergeConfig(config);
 		
+		if (finalConfig.userConfigPath) {
+			console.log("✅ Configuration chargée depuis:", finalConfig.userConfigPath);
+		} else {
+			console.log("ℹ️  Aucune configuration trouvée, utilisation des valeurs par défaut");
+		}
+		console.log("📁 Répertoire de génération:", finalConfig.paths.modules);
+		
 		console.log("\n🔧 Chemins de génération:");
 		console.log("  Modules:     ", finalConfig.paths.modules);
 		console.log("  Templates:   ", finalConfig.paths.templates);

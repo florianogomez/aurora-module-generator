@@ -15,6 +15,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GraphQL support
 - REST API backend generator
 
+## [1.1.3] - 2025-11-13
+
+### 🐛 Fixes
+- Fixed configuration loading to properly detect and display user config files
+- Fixed path display in dry-run mode to show correct generation paths
+- Updated `delete-module` command to use user configuration for module paths
+- Improved configuration display messages across all commands
+
+### 🔧 Improvements
+- Configuration loader now returns config file name for better user feedback
+- Generator shows config source (file or defaults) and generation path before module creation
+- `generate config` command displays whether config was loaded from file or using defaults
+
 ## [1.1.2] - 2025-11-13
 
 ### ✨ Features
