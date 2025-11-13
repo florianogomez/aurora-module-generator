@@ -1,0 +1,7 @@
+import {
+{{pascalCase resource}}Store } from "../index"; /** * add action * * @param
+{{"{"}}{{pascalCase resource}}Store} store - The Pinia store instance * @param
+{{"{"}}{{pascalCase resource}}Interface} element - Element to add * @returns {void} */ export
+function add(store:
+{{pascalCase resource}}Store, element:
+{{pascalCase resource}}Interface) { store.elements.push(element); }

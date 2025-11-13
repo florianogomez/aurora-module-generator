@@ -1,0 +1,22 @@
+import { ApiRoute } from "@/api/routes/api_route";
+import { useInitialized{{pascalCase resource}}Store } from "../store";
+import { {{pascalCase resource}}Store } from "../store";
+
+/**
+ * Route de base pour {{pascalCase resource}}
+ */
+export class {{pascalCase resource}}Route extends ApiRoute {
+  static name = "{{kebabCase resource}}";
+
+  get store(): Promise<{{pascalCase resource}}Store> {
+    return useInitialized{{pascalCase resource}}Store();
+  }
+
+  async request() {
+    const store = await this.store;
+    store.setLoading(true);
+    const result = await super.request();
+    store.setLoading(false);
+    return result;
+  }
+}

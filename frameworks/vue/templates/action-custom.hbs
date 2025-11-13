@@ -1,0 +1,19 @@
+import { {{pascalCase resource}}Store } from "../index";
+import { {{camelCase resource}}StoreDefinition } from "../definition";
+
+/**
+ * {{actionName}} action
+ *
+ * @param {{"{"}}{{pascalCase resource}}Store} store - The Pinia store instance
+ * @param {Object} [payload={}] - Optional parameters
+ * @returns {Promise<void>}
+ */
+export async function {{actionName}}(store: {{pascalCase resource}}Store, payload = {}) {
+  store.loading = true;
+  appLogger.info(`[🍍][${"${store.$id}"}]: Executing {{actionName}}()`);
+
+  // TODO: implement {{actionName}}
+
+  store.loading = false;
+  appLogger.success(`[🍍][${"${store.$id}"}]: {{actionName}}() completed`);
+}

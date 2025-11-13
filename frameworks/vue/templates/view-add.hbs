@@ -1,0 +1,44 @@
+<script setup lang="ts">
+import BaseBlock from "@/components/BaseBlock.vue";
+import { ApiError } from "@/api/errors/index";
+import { use{{pascalCase resource}}Actions } from "../composables/use_{{snakeCase resource}}_actions";
+import {{pascalCase resource}}Form from "../components/{{pascalCase resource}}Form.vue";
+import { {{pascalCase resource}}CreateInterface } from "../interfaces/{{snakeCase resource}}_create_interface";
+import { {{pascalCase resource}}UpdateInterface } from "../interfaces/{{snakeCase resource}}_update_interface";
+
+const logger = createLogger("{{camelCase resource}}AddView");
+
+const { processing: loading, create{{pascalCase resource}}: create } = use{{pascalCase resource}}Actions();
+
+const handleSave = async (data: {{pascalCase resource}}CreateInterface | {{pascalCase resource}}UpdateInterface) => {
+	const createData = data as {{pascalCase resource}}CreateInterface;
+	logger.info("Création {{lowerCase (article resource)}}{{lowerCase resource}}", createData);
+	const result = await create(createData);
+
+	if (result instanceof ApiError) {
+		logger.error("Erreur lors de la création {{lowerCase (article resource)}}{{lowerCase resource}}", result);
+		toast.error(result.message || "Erreur lors de la création {{lowerCase (article resource)}}{{lowerCase resource}}");
+		return;
+	}
+
+	logger.info("{{pascalCase resource}} créé{{feminineSuffix resource}} avec succès", result);
+	toast.success("{{pascalCase resource}} créé{{feminineSuffix resource}} avec succès !");
+	router.push("/{{kebabCase (pluralize resource)}}");
+};
+
+const handleCancel = () => {
+	router.push("/{{kebabCase (pluralize resource)}}");
+};
+</script>
+
+<template>
+	<BaseBlock
+		title="Ajouter {{indefiniteArticle resource}}{{lowerCase resource}}"
+		class="block-mode-loading-oneui"
+		:class="{ 'block-mode-loading': loading }"
+	>
+		<div class="pb-8">
+			<{{pascalCase resource}}Form :loading="loading" @save="handleSave" @cancel="handleCancel" />
+		</div>
+	</BaseBlock>
+</template>

@@ -1,0 +1,94 @@
+<script setup lang="ts">
+import BaseBlock from "@/components/BaseBlock.vue";
+import { ref, onMounted } from "vue";
+import { ApiError } from "@/api/errors/index";
+import { use{{pascalCase resource}}Actions } from "../composables/use_{{snakeCase resource}}_actions";
+import { {{pascalCase resource}}Model } from "../models/{{snakeCase resource}}_model";
+import { {{pascalCase resource}}Store } from "../store/{{snakeCase resource}}_store";
+import {{pascalCase resource}}Form from "../components/{{pascalCase resource}}Form.vue";
+import { {{pascalCase resource}}CreateInterface } from "../interfaces/{{snakeCase resource}}_create_interface";
+import { {{pascalCase resource}}UpdateInterface } from "../interfaces/{{snakeCase resource}}_update_interface";
+
+const logger = createLogger("{{camelCase resource}}EditView");
+
+const route = useRoute();
+const {{camelCase resource}}Id = computed(() => (route.params as { id?: string }).id);
+
+const {{camelCase resource}}Store = ref<{{pascalCase resource}}Store | null>(null);
+const current{{pascalCase resource}} = ref<{{pascalCase resource}}Model | null>(null);
+
+const { processing: loading } = use{{pascalCase resource}}Actions();
+
+const fetch{{pascalCase resource}} = async () => {
+	if (!{{camelCase resource}}Store.value) {
+		{{camelCase resource}}Store.value = await useInitialized{{pascalCase resource}}Store();
+	}
+
+	const id = {{camelCase resource}}Id.value;
+	if (!id) {
+		logger.error("ID {{lowerCase resource}} manquant");
+		toast.error("ID {{lowerCase resource}} manquant");
+		router.push("/{{kebabCase (pluralize resource)}}");
+		return;
+	}
+
+	await {{camelCase resource}}Store.value.get{{pascalCase (pluralize resource)}}();
+	const result = await {{camelCase resource}}Store.value.find{{pascalCase resource}}(id);
+
+	if (result instanceof ApiError) {
+		logger.error("Erreur lors de la récupération {{lowerCase (article resource)}}{{lowerCase resource}}", result);
+		toast.error(result.message || "Erreur lors de la récupération {{lowerCase (article resource)}}{{lowerCase resource}}");
+		router.push("/{{kebabCase (pluralize resource)}}");
+		return;
+	}
+
+	current{{pascalCase resource}}.value = new {{pascalCase resource}}Model(result.interface);
+};
+
+const handleSave = async (data: {{pascalCase resource}}CreateInterface | {{pascalCase resource}}UpdateInterface) => {
+	if (!{{camelCase resource}}Store.value || !{{camelCase resource}}Id.value) {
+		logger.error("Le store {{lowerCase resource}} n'est pas initialisé ou ID manquant");
+		return;
+	}
+
+	const updateData = data as {{pascalCase resource}}UpdateInterface;
+	logger.info("Mise à jour {{lowerCase (article resource)}}{{lowerCase resource}}", updateData);
+
+	const result = await {{camelCase resource}}Store.value.update{{pascalCase resource}}({{camelCase resource}}Id.value, updateData);
+
+	if (result instanceof ApiError) {
+		logger.error("Erreur lors de la mise à jour {{lowerCase (article resource)}}{{lowerCase resource}}", result);
+		toast.error(result.message || "Erreur lors de la mise à jour {{lowerCase (article resource)}}{{lowerCase resource}}");
+		return;
+	}
+
+	logger.info("{{pascalCase resource}} mis{{feminineSuffix resource}} à jour avec succès", result);
+	toast.success("{{pascalCase resource}} modifié{{feminineSuffix resource}} avec succès !");
+	router.push("/{{kebabCase (pluralize resource)}}");
+};
+
+const handleCancel = () => {
+	router.push("/{{kebabCase (pluralize resource)}}");
+};
+
+onMounted(async () => {
+	await fetch{{pascalCase resource}}();
+});
+</script>
+
+<template>
+	<BaseBlock
+		title="Modifier {{definiteArticle resource}}{{lowerCase resource}}"
+		class="block-mode-loading-oneui"
+		:class="{ 'block-mode-loading': loading }"
+	>
+		<div class="pb-8">
+			<{{pascalCase resource}}Form
+				:{{camelCase resource}}="current{{pascalCase resource}}"
+				:loading="loading"
+				@save="handleSave"
+				@cancel="handleCancel"
+			/>
+		</div>
+	</BaseBlock>
+</template>

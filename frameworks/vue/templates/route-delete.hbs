@@ -1,0 +1,23 @@
+import ApiHttpMethod from "@/api/enums/api_http_method_enum"; import ApiError from
+"@/api/errors/ApiError"; import {
+{{resourcePascalCase}}Interface } from "../interfaces/{{resourceKebabCase}}_interface"; import {
+{{resourcePascalCase}}Model } from "../models/{{resourceKebabCase}}_model"; import {
+{{resourcePascalCase}}Route } from "./_{{resourceKebabCase}}_route"; import {
+{{resourcePascalCase}}Store } from "../store"; import NotFoundApiError from
+"@/api/errors/NotFoundApiError"; /** * Route de suppression
+{{resourcePascalCase}}
+*/ export class
+{{resourcePascalCase}}DeleteRoute extends
+{{resourcePascalCase}}Route { constructor(private elementId:
+{{resourcePascalCase}}Interface["id"]) { super(`/{{resourcePascalCase}}Route.name}/${elementId}`,
+ApiHttpMethod.DELETE, { elementId }); } async request() { if (this.isMock) { return this.mock(); }
+const response = await super.request(); if (response instanceof ApiError) return response; return
+new
+{{resourcePascalCase}}Model(response as
+{{resourcePascalCase}}Interface); } async mock() { const store:
+{{resourcePascalCase}}Store = await this.store; const
+{{resourceCamelCase}}ToDelete = store.find(this.elementId); if (!{{resourceCamelCase}}ToDelete) {
+return new NotFoundApiError({ message: `Aucun
+{{resourceLowerCase}}
+trouvé avec l'ID ${this.elementId}.`, }); } store.remove(this.elementId); return new
+{{resourcePascalCase}}Model({{resourceCamelCase}}ToDelete); } }

@@ -1,0 +1,30 @@
+import { {{pascalCase resource}}Interface } from "../interfaces";
+
+/**
+ * Modèle {{pascalCase resource}}
+ */
+export class {{pascalCase resource}}Model extends ApiResourceModel implements {{pascalCase resource}}Interface {
+{{#each fields}}
+  {{name}}: {{pascalCase ../resource}}Interface["{{name}}"];
+{{/each}}
+
+  constructor(data: {{pascalCase resource}}Interface) {
+    super(data);
+{{#each fields}}
+    this.{{name}} = data.{{name}}{{#if default}} ?? {{jsonStringify default}}{{/if}};
+{{/each}}
+  }
+
+  get interface(): {{pascalCase resource}}Interface {
+    return {
+      ...super.interface,
+{{#each fields}}
+      {{name}}: this.{{name}},
+{{/each}}
+    };
+  }
+
+  get json(): string {
+    return JSON.stringify(this.interface);
+  }
+}

@@ -1,0 +1,133 @@
+# Module de test pour validation du générateur moderne
+# Ce fichier peut être utilisé pour tester la génération
+
+resource: Product
+description: Module de gestion des produits
+version: 1.0.0
+
+# Attributs de l'interface principale
+attributes:
+  - name: name
+    type: string
+    required: true
+    description: Nom du produit
+
+  - name: description
+    type: string
+    required: false
+    description: Description du produit
+
+  - name: price
+    type: number
+    required: true
+    description: Prix du produit
+
+  - name: category
+    type: string
+    required: true
+    description: Catégorie du produit
+
+  - name: stock
+    type: number
+    required: true
+    description: Quantité en stock
+
+  - name: is_active
+    type: boolean
+    required: true
+    description: Produit actif ou non
+
+# Attributs pour l'interface de création
+create_attributes:
+  - name
+  - description
+  - price
+  - category
+  - stock
+
+# Attributs pour l'interface de mise à jour (tous optionnels via Partial)
+update_attributes:
+  - name
+  - description
+  - price
+  - category
+  - stock
+  - is_active
+
+# Attributs pour les filtres de liste avec métadonnées
+filterAttributes:
+  - name: is_active
+    type: boolean
+    label: "Statut"
+    icon: "ri-checkbox-circle-line"
+    trueLabel: "Actif"
+    falseLabel: "Inactif"
+
+  - name: category
+    type: string
+    label: "Catégorie"
+    icon: "ri-folder-line"
+
+  - name: min_price
+    type: number
+    label: "Prix minimum"
+    icon: "ri-money-dollar-circle-line"
+
+  - name: max_price
+    type: number
+    label: "Prix maximum"
+    icon: "ri-money-dollar-circle-line"
+
+# Routes de navigation (optionnel)
+# Si non spécifié, utilisera les noms par défaut basés sur la ressource
+navigation:
+  list: products
+  add: products-form
+  edit: products-id-edit
+  details: products-id
+
+# Configuration du composant Selector (optionnel)
+selector:
+  displayField: name
+  secondaryField: category
+  icon: ri-shopping-bag-line
+  color: info
+
+# Actions CRUD standard
+actions:
+  - name: getAll
+    description: Récupère tous les produits
+    route: list
+    method: GET
+
+  - name: findOne
+    description: Récupère un produit par ID
+    route: find
+    method: GET
+
+  - name: create
+    description: Crée un nouveau produit
+    route: create
+    method: POST
+
+  - name: updateOne
+    description: Met à jour un produit
+    route: update
+    method: PUT
+
+  - name: delete
+    description: Supprime un produit
+    route: delete
+    method: DELETE
+
+# Configuration du store
+store_name: product
+
+# Options de génération
+options:
+  generate_interfaces: true
+  generate_model: true
+  generate_routes: true
+  generate_store: true
+  generate_actions: true
+  export_interfaces: false # Pour éviter de modifier le fichier global pendant les tests

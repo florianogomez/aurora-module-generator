@@ -1,0 +1,22 @@
+import ApiHttpMethod from "@/api/enums/api_http_method_enum"; import ApiError from
+"@/api/errors/ApiError"; import {
+{{resourcePascalCase}}Interface } from "../interfaces/{{resourceKebabCase}}_interface"; import {
+{{resourcePascalCase}}CreateInterface } from "../interfaces/{{resourceKebabCase}}_create_interface";
+import {
+{{resourcePascalCase}}Model } from "../models/{{resourceKebabCase}}_model"; import {
+{{resourcePascalCase}}Route } from "./_{{resourceKebabCase}}_route"; import { faker } from
+"@faker-js/faker"; import {
+{{resourcePascalCase}}Store } from "../store"; /** * Route de création
+{{resourcePascalCase}}
+*/ export class
+{{resourcePascalCase}}CreateRoute extends
+{{resourcePascalCase}}Route { constructor(public data:
+{{resourcePascalCase}}CreateInterface) { super(`/{{resourcePascalCase}}Route.name}`,
+ApiHttpMethod.POST, data); } async request() { if (this.isMock) { return this.mock(); } const
+response = await super.request(); if (response instanceof ApiError) return response; return new
+{{resourcePascalCase}}Model(response as
+{{resourcePascalCase}}Interface); } async mock() { const store:
+{{resourcePascalCase}}Store = await this.store; const model = new
+{{resourcePascalCase}}Model({ ...this.data, id: faker.string.uuid(), created_at: new
+Date().toISOString(), updated_at: new Date().toISOString(), }); store.add(model.interface); return
+model; } }

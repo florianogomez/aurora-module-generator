@@ -1,0 +1,25 @@
+import ApiError from "@/api/errors/ApiError";
+import { {{pascalCase resource}}CreateRoute } from "../../apis/{{kebabCase resource}}_create_route";
+import { {{pascalCase resource}}CreateInterface } from "../../interfaces/{{kebabCase resource}}_create_interface";
+import { {{pascalCase resource}}Model } from "../../models/{{kebabCase resource}}_model";
+import { {{pascalCase resource}}Store } from "../index";
+
+/**
+ * Action create{{pascalCase resource}}
+ * Crée un nouveau {{lowerCase resource}}
+ * 
+ * @param {{"{"}}{{pascalCase resource}}Store} store - Instance du store Pinia
+ * @param {{ "{" }} data }} - Données de création
+ * @returns {Promise<{{pascalCase resource}}Model | ApiError>}
+ */
+export async function create{{pascalCase resource}}(
+  store: {{pascalCase resource}}Store,
+  { data }: { data: {{pascalCase resource}}CreateInterface }
+): Promise<{{pascalCase resource}}Model | ApiError> {
+  const apiRoute = new {{pascalCase resource}}CreateRoute(data);
+  const result = await apiRoute.request();
+  if (result instanceof ApiError) return result;
+  return result;
+}
+
+

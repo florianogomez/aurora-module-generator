@@ -1,0 +1,30 @@
+import ApiError from "@/api/errors/ApiError";
+import { {{pascalCase resource}}ListRoute } from "../../apis/{{kebabCase resource}}_list_route";
+import { {{pascalCase resource}}Model } from "../../models/{{kebabCase resource}}_model";
+import { {{pascalCase resource}}Store } from "../index";
+import { {{pascalCase resource}}ListFilterInterface } from "../../interfaces/{{kebabCase resource}}_list_filter_interface";
+
+/**
+ * Action get{{pluralize (pascalCase resource)}}
+ * Récupère la liste des {{pluralize (lowerCase resource)}}
+ * 
+ * @param {{"{"}}{{pascalCase resource}}Store} store - Instance du store Pinia
+ * @param {{ "{" }} args }} - Paramètres de filtrage optionnels
+ * @returns {Promise<{{pascalCase resource}}Model[] | ApiError>}
+ */
+export async function get{{pluralize (pascalCase resource)}}(
+  store: {{pascalCase resource}}Store, 
+  { args }: { args?: {{pascalCase resource}}ListFilterInterface } = {}
+): Promise<{{pascalCase resource}}Model[] | ApiError> {
+  const apiRoute = new {{pascalCase resource}}ListRoute(args);
+  const result = await apiRoute.request();
+
+  if (result instanceof ApiError) return result;
+
+  if (Object.values(args || {}).length === 0)
+    store.elements = result.map((model) => model.interface);
+
+  return result;
+}
+
+

@@ -1,0 +1,126 @@
+import { ApiError } from "@/api/errors";
+import { {{pascalCase resource}}Interface } from "../interfaces";
+import { {{pascalCase resource}}ListFilterInterface } from "../interfaces/{{kebabCase resource}}_list_filter_interface";
+import { {{pascalCase resource}}CreateInterface } from "../interfaces/{{kebabCase resource}}_create_interface";
+import { {{pascalCase resource}}UpdateInterface } from "../interfaces/{{kebabCase resource}}_update_interface";
+import { {{pascalCase resource}}Model } from "../models/{{kebabCase resource}}_model";
+import { use{{pascalCase resource}}Store } from "../stores/{{camelCase resource}}_store";
+
+const logger = createLogger("use{{pascalCase resource}}Actions");
+
+export const use{{pascalCase resource}}Actions = () => {
+	const globalStore = useGlobalStore();
+	const {{camelCase resource}}Store = ref<{{pascalCase resource}}Store | null>(null);
+	const {{camelCase (pluralize resource)}} = ref<{{pascalCase resource}}Model[]>([]);
+	const processing = computed(() => ({{camelCase resource}}Store.value ? {{camelCase resource}}Store.value.loading : true));
+
+	const get{{pascalCase (pluralize resource)}} = async (args?: {{pascalCase resource}}ListFilterInterface) => {
+		if (!{{camelCase resource}}Store.value) {
+			{{camelCase resource}}Store.value = await useInitialized{{pascalCase resource}}Store();
+		}
+
+		const result = await {{camelCase resource}}Store.value.get{{pascalCase (pluralize resource)}}(args);
+
+		if (result instanceof ApiError) {
+			logger.error("Error fetching {{lowerCase (pluralize resource)}}:", { result });
+			globalStore.showSnackbarErrorAction(result.errorMessage);
+
+			return [];
+		}
+
+		{{camelCase (pluralize resource)}}.value = [...result];
+	};
+
+	const find{{pascalCase resource}} = async (id: {{pascalCase resource}}Interface["id"]) => {
+		if (!{{camelCase resource}}Store.value) {
+			{{camelCase resource}}Store.value = await useInitialized{{pascalCase resource}}Store();
+		}
+
+		const result = await {{camelCase resource}}Store.value.find{{pascalCase resource}}(id);
+		if (result instanceof ApiError) {
+			logger.error("Error finding {{lowerCase resource}}:", result);
+			globalStore.showSnackbarErrorAction(result.errorMessage);
+			return null;
+		}
+
+		return new {{pascalCase resource}}Model(result.interface);
+	};
+
+	const create{{pascalCase resource}} = async (data: {{pascalCase resource}}CreateInterface) => {
+		if (!{{camelCase resource}}Store.value) {
+			{{camelCase resource}}Store.value = await useInitialized{{pascalCase resource}}Store();
+		}
+
+		const result = await {{camelCase resource}}Store.value.create{{pascalCase resource}}(data);
+		if (result instanceof ApiError) {
+			logger.error("Error creating {{lowerCase resource}}:", result);
+
+			globalStore.showSnackbarErrorAction(
+				`Erreur lors de la création {{#if (isFeminine resource)}}de la{{else}}du{{/if}} {{lowerCase resource}}: ${result.errorMessage}`
+			);
+
+			return result;
+		}
+
+		globalStore.showSnackbarSuccessAction(`{{pascalCase resource}} {{#if (isFeminine resource)}}créée{{else}}créé{{/if}} avec succès.`);
+
+		return new {{pascalCase resource}}Model(result.interface);
+	};
+
+	const update{{pascalCase resource}} = async (elementId: {{pascalCase resource}}Interface["id"], data: {{pascalCase resource}}UpdateInterface) => {
+		if (!{{camelCase resource}}Store.value) {
+			{{camelCase resource}}Store.value = await useInitialized{{pascalCase resource}}Store();
+		}
+
+		const result = await {{camelCase resource}}Store.value.update{{pascalCase resource}}(elementId, data);
+		if (result instanceof ApiError) {
+			logger.error("Error updating {{lowerCase resource}}:", result);
+			globalStore.showSnackbarErrorAction(
+				`Erreur lors de la mise à jour {{#if (isFeminine resource)}}de la{{else}}du{{/if}} {{lowerCase resource}}: ${result.errorMessage}`
+			);
+			return result;
+		}
+
+		globalStore.showSnackbarSuccessAction(`{{pascalCase resource}} {{#if (isFeminine resource)}}mise{{else}}mis{{/if}} à jour avec succès.`);
+
+		return new {{pascalCase resource}}Model(result.interface);
+	};
+
+	const delete{{pascalCase resource}} = async (element: {{pascalCase resource}}Interface) => {
+		if (!{{camelCase resource}}Store.value) {
+			{{camelCase resource}}Store.value = await useInitialized{{pascalCase resource}}Store();
+		}
+
+		const result = await {{camelCase resource}}Store.value.delete{{pascalCase resource}}(element.id);
+		if (result instanceof ApiError) {
+			logger.error("Error deleting {{lowerCase resource}}:", result);
+
+			globalStore.showSnackbarErrorAction(
+				`Erreur lors de la suppression {{#if (isFeminine resource)}}de la{{else}}du{{/if}} {{lowerCase resource}}: ${result.errorMessage}`
+			);
+			return false;
+		}
+
+		globalStore.showSnackbarSuccessAction(
+			`{{pascalCase resource}} {{#if (isFeminine resource)}}supprimée{{else}}supprimé{{/if}} avec succès.`
+		);
+		get{{pascalCase (pluralize resource)}}();
+
+		return true;
+	};
+
+	onMounted(async () => {
+		{{camelCase resource}}Store.value = await useInitialized{{pascalCase resource}}Store();
+		{{camelCase (pluralize resource)}}.value = {{camelCase resource}}Store.value.elements.map(({{camelCase resource}}) => new {{pascalCase resource}}Model({{camelCase resource}}));
+	});
+
+	return {
+		processing,
+		{{camelCase (pluralize resource)}},
+		get{{pascalCase (pluralize resource)}},
+		find{{pascalCase resource}},
+		create{{pascalCase resource}},
+		update{{pascalCase resource}},
+		delete{{pascalCase resource}},
+	};
+};

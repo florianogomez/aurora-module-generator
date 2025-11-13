@@ -1,0 +1,15 @@
+
+import {
+{{pascalCase resource}}Store } from "../index"; import {
+{{pascalCase resource}}Interface } from "../../interfaces/{{kebabCase resource}}_interface"; /** *
+update action * * @param
+{{"{"}}{{pascalCase resource}}Store} store - The Pinia store instance * @param
+{{"{"}}
+id:
+{{pascalCase resource}}Interface["id"], data:
+{{pascalCase resource}}Interface }} payload - Data to update * @returns {void} */ export function
+update(store:
+{{pascalCase resource}}Store, { id, data }: { id:
+{{pascalCase resource}}Interface["id"], data:
+{{pascalCase resource}}Interface }) { const index = store.elements.findIndex((e) => e.id === id); if
+(index !== -1) { store.elements[index] = { ...store.elements[index], ...data }; } }

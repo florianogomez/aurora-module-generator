@@ -1,0 +1,7 @@
+import { {{pascalCase resource}}CreateInterface } from "./{{kebabCase resource}}_create_interface";
+
+/**
+ * Type pour la mise à jour d'un {{pascalCase resource}}
+ * Tous les champs sont optionnels
+ */
+export type {{pascalCase resource}}UpdateInterface = Partial<{{pascalCase resource}}CreateInterface>;

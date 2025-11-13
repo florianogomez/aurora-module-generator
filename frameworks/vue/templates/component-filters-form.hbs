@@ -1,0 +1,129 @@
+<script setup lang="ts">
+import { {{pascalCase resource}}ListFilterInterface } from "../interfaces/{{snakeCase resource}}_list_filter_interface";
+
+interface Props {
+	modelValue: boolean;
+	filters: {{pascalCase resource}}ListFilterInterface;
+	loading?: boolean;
+}
+
+interface Emits {
+	(e: "update:modelValue", value: boolean): void;
+	(e: "update:search", value: string): void;
+{{#each filterAttributes}}
+	(e: "update:{{camelCase name}}", value: any): void;
+{{/each}}
+	(e: "apply"): void;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+	loading: false,
+});
+
+const emit = defineEmits<Emits>();
+
+const showDialog = computed({
+	get: () => props.modelValue,
+	set: (value) => emit("update:modelValue", value),
+});
+
+const closeDialog = () => {
+	showDialog.value = false;
+};
+
+const handleApplyFilters = () => {
+	emit("apply");
+	showDialog.value = false;
+};
+</script>
+
+<template>
+	<VDialog v-model="showDialog" max-width="600px">
+		<VCard>
+			<VCardTitle class="d-flex align-center">
+				<VIcon icon="ri-filter-line" class="me-2" />
+				Filtrer les {{lowerCase (pluralize resource)}}
+			</VCardTitle>
+			<VCardText>
+				<VContainer>
+					<VRow>
+						<VCol cols="12">
+							<VTextField
+								:model-value="props.filters.search"
+								label="Rechercher"
+								placeholder="Rechercher..."
+								density="compact"
+								clearable
+								prepend-inner-icon="ri-search-line"
+								@update:model-value="emit('update:search', $event)"
+							/>
+						</VCol>
+					</VRow>
+{{#each filterAttributes}}
+					<VRow>
+						<VCol cols="12"{{#if (gt @index 1)}} md="6"{{/if}}>
+{{#if (eq type "boolean")}}
+							<VSelect
+								:model-value="props.filters.{{name}}"
+								label="{{label}}"
+								placeholder="Tous"
+								density="compact"
+								clearable
+								prepend-inner-icon="{{icon}}"
+								:items="[
+									{ title: '{{trueLabel}}', value: true },
+									{ title: '{{falseLabel}}', value: false }
+								]"
+								@update:model-value="emit('update:{{camelCase name}}', $event)"
+							/>
+{{else if (eq type "string")}}
+							<!-- TODO: Remplacer par un sélecteur approprié si nécessaire (ex: {{pascalCase name}}Selector) -->
+							<VTextField
+								:model-value="props.filters.{{name}}"
+								label="{{label}}"
+								placeholder="Filtrer par {{lowerCase label}}"
+								density="compact"
+								clearable
+								prepend-inner-icon="{{icon}}"
+								@update:model-value="emit('update:{{camelCase name}}', $event)"
+							/>
+{{else if (eq type "number")}}
+							<VTextField
+								:model-value="props.filters.{{name}}"
+								label="{{label}}"
+								placeholder="Filtrer par {{lowerCase label}}"
+								density="compact"
+								clearable
+								type="number"
+								prepend-inner-icon="{{icon}}"
+								@update:model-value="emit('update:{{camelCase name}}', $event ? Number($event) : undefined)"
+							/>
+{{else}}
+							<!-- Type {{type}} non supporté par défaut - TODO: Implémenter un composant personnalisé -->
+							<VTextField
+								:model-value="props.filters.{{name}}"
+								label="{{label}}"
+								placeholder="Filtrer par {{lowerCase label}}"
+								density="compact"
+								clearable
+								prepend-inner-icon="{{icon}}"
+								@update:model-value="emit('update:{{camelCase name}}', $event)"
+							/>
+{{/if}}
+						</VCol>
+					</VRow>
+{{/each}}
+				</VContainer>
+			</VCardText>
+			<VCardActions>
+				<VSpacer />
+				<VBtn color="grey" variant="text" @click="closeDialog">
+					Annuler
+				</VBtn>
+				<VBtn color="primary" variant="flat" @click="handleApplyFilters" :loading="loading">
+					Appliquer
+				</VBtn>
+			</VCardActions>
+		</VCard>
+	</VDialog>
+</template>

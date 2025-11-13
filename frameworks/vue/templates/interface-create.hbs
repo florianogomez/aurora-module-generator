@@ -1,0 +1,7 @@
+import { {{pascalCase resource}}Interface } from "./{{kebabCase resource}}_interface";
+
+/**
+ * Type pour la création d'un {{pascalCase resource}}
+ * Exclut les champs ApiResourceInterface qui sont générés automatiquement
+ */
+export type {{pascalCase resource}}CreateInterface = Omit<{{pascalCase resource}}Interface, keyof ApiResourceInterface>;

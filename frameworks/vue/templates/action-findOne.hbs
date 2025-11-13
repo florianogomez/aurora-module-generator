@@ -1,0 +1,25 @@
+import ApiError from "@/api/errors/ApiError";
+import { {{pascalCase resource}}FindRoute } from "../../apis/{{kebabCase resource}}_find_route";
+import { {{pascalCase resource}}Model } from "../../models/{{kebabCase resource}}_model";
+import { {{pascalCase resource}}Interface } from "../../interfaces/{{kebabCase resource}}_interface";
+import { {{pascalCase resource}}Store } from "../index";
+
+/**
+ * Action find{{pascalCase resource}}
+ * Recherche un {{lowerCase resource}} par ID via l'API
+ * 
+ * @param {{"{"}}{{pascalCase resource}}Store} store - Instance du store Pinia
+ * @param {{ "{" }} elementId }} - ID de l'élément à rechercher
+ * @returns {Promise<{{pascalCase resource}}Model | ApiError>}
+ */
+export async function find{{pascalCase resource}}(
+  store: {{pascalCase resource}}Store,
+  { elementId }: { elementId: {{pascalCase resource}}Interface["id"] }
+): Promise<{{pascalCase resource}}Model | ApiError> {
+  const apiRoute = new {{pascalCase resource}}FindRoute(elementId);
+  const result = await apiRoute.request();
+  if (result instanceof ApiError) return result;
+  return result;
+}
+
+

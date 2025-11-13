@@ -1,0 +1,197 @@
+import { computed, readonly, ref } from "vue";
+import { {{pascalCase resource}}ListFilterInterface } from "../interfaces/{{kebabCase resource}}_list_filter_interface";
+
+export const use{{pascalCase resource}}Filters = () => {
+	const appliedFilters = ref<Partial<{{pascalCase resource}}ListFilterInterface>>({});
+	const draftFilters = ref<Partial<{{pascalCase resource}}ListFilterInterface>>({});
+	const filtersApplied = ref(false);
+
+	type FilterInfo = {
+		key: keyof {{pascalCase resource}}ListFilterInterface;
+		label: string;
+		icon: string;
+	};
+
+	// Configuration des métadonnées pour chaque filtre connu
+	const filterInfoConfig = computed(() => {
+		const config: Record<keyof {{pascalCase resource}}ListFilterInterface, FilterInfo> = {
+			page: {
+				key: "page",
+				label: "Page",
+				icon: "ri-pages-fill",
+			},
+			search: {
+				key: "search",
+				label: "Recherche",
+				icon: "ri-search-line",
+			},
+{{#each filterAttributes}}
+			{{name}}: {
+				key: "{{name}}",
+				label: "{{#if label}}{{label}}{{else}}{{pascalCase name}}{{/if}}",
+				icon: "{{#if icon}}{{icon}}{{else}}ri-filter-line{{/if}}",
+			},
+{{/each}}
+		};
+
+		return config as Record<keyof {{pascalCase resource}}ListFilterInterface, FilterInfo>;
+	});
+
+	const getFilterInfo = (filter: keyof {{pascalCase resource}}ListFilterInterface): FilterInfo | undefined => {
+		return filterInfoConfig.value[filter];
+	};
+
+	const getFilterLabel = (filter: keyof {{pascalCase resource}}ListFilterInterface): string => {
+		const info = getFilterInfo(filter);
+		return info ? info.label : String(filter);
+	};
+
+	type ActiveFilter = {
+		key: keyof {{pascalCase resource}}ListFilterInterface;
+		label: string;
+		icon: string;
+		value: unknown;
+	};
+
+	// Renvoie les filtres actuellement actifs sous une forme lisible (info + valeur)
+	const activeFilters = computed<ActiveFilter[]>(() => {
+		const result: ActiveFilter[] = [];
+
+		const current = appliedFilters.value as {{pascalCase resource}}ListFilterInterface;
+
+		Object.keys(current).forEach((k) => {
+			// TS: on s'assure que k est bien une clé de l'interface
+			const key = k as keyof {{pascalCase resource}}ListFilterInterface;
+			const val = current[key];
+
+			// Ignorer valeurs null/undefined/chaînes vides
+			if (val === undefined || val === null) return;
+			if (typeof val === "string" && val.trim() === "") return;
+
+			// Exclure les filtres internes comme la page
+			if (key === "page") return;
+
+			const info = getFilterInfo(key);
+
+			// Formatter les valeurs spéciales
+			let displayValue = val;
+{{#each filterAttributes}}
+{{#if (eq type "boolean")}}
+
+			if (key === "{{name}}" && typeof val === "boolean") {
+				displayValue = val ? "{{#if trueLabel}}{{trueLabel}}{{else}}Oui{{/if}}" : "{{#if falseLabel}}{{falseLabel}}{{else}}Non{{/if}}";
+			}
+{{/if}}
+{{#if enumType}}
+
+			if (key === "{{name}}" && typeof val === "string") {
+				// TODO: Adapter selon votre énumération {{enumType}}
+				displayValue = val;
+			}
+{{/if}}
+{{/each}}
+
+			result.push({
+				key,
+				label: info ? info.label : String(key),
+				icon: info ? info.icon : "",
+				value: displayValue,
+			});
+		});
+
+		return result;
+	});
+
+	const setFilters = (customFilters: Partial<{{pascalCase resource}}ListFilterInterface>) => {
+		const nextDraft: Partial<{{pascalCase resource}}ListFilterInterface> = { ...draftFilters.value };
+
+		const assignFilterValue = <K extends keyof {{pascalCase resource}}ListFilterInterface>(
+			key: K,
+			value: {{pascalCase resource}}ListFilterInterface[K] | undefined
+		) => {
+			if (value === undefined || value === null) {
+				delete nextDraft[key];
+				return;
+			}
+
+			if (typeof value === "string" && value.trim() === "") {
+				delete nextDraft[key];
+				return;
+			}
+
+			nextDraft[key] = value;
+		};
+
+		(Object.keys(customFilters) as (keyof {{pascalCase resource}}ListFilterInterface)[]).forEach((key) => {
+			assignFilterValue(key, customFilters[key]);
+		});
+
+		draftFilters.value = nextDraft;
+	};
+
+	const resetFilters = () => {
+		appliedFilters.value = {};
+		draftFilters.value = {};
+		filtersApplied.value = false;
+	};
+
+	// Initialise les filtres draft avec les filtres appliqués (pour ouvrir le dialog)
+	const initDraftFilters = () => {
+		draftFilters.value = { ...appliedFilters.value };
+	};
+
+	// Méthodes spécifiques
+	const setSearch = (search: string) => {
+		setFilters({ search: search || undefined });
+	};
+
+	const setPage = (page: number) => {
+		setFilters({ page });
+	};
+{{#each filterAttributes}}
+
+	const set{{pascalCase name}} = ({{camelCase name}}: {{type}}{{#if optional}} | undefined{{/if}}) => {
+		setFilters({ {{name}}: {{camelCase name}} });
+	};
+{{/each}}
+
+	const removeFilter = (filterKey: keyof {{pascalCase resource}}ListFilterInterface) => {
+		const updatedApplied = { ...appliedFilters.value };
+		delete updatedApplied[filterKey];
+		appliedFilters.value = updatedApplied;
+
+		const updatedDraft = { ...draftFilters.value };
+		delete updatedDraft[filterKey];
+		draftFilters.value = updatedDraft;
+	};
+
+	const hasActiveFilters = computed(() => activeFilters.value.length > 0);
+
+	const applyFilters = () => {
+		appliedFilters.value = { ...draftFilters.value };
+		filtersApplied.value = true;
+	};
+
+	return {
+		filters: readonly(appliedFilters),
+		draftFilters: readonly(draftFilters),
+		filterInfoConfig,
+		activeFilters,
+		getFilterInfo,
+		getFilterLabel,
+		setFilters,
+		resetFilters,
+		initDraftFilters,
+		removeFilter,
+		// Méthodes spécifiques
+		setSearch,
+		setPage,
+{{#each filterAttributes}}
+		set{{pascalCase name}},
+{{/each}}
+		// État d'application des filtres
+		filtersApplied: readonly(filtersApplied),
+		applyFilters,
+		hasActiveFilters,
+	};
+};

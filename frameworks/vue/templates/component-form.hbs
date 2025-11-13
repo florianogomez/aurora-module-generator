@@ -1,0 +1,216 @@
+<script setup lang="ts">
+import { {{resourcePascalCase}}Model } from "../models/{{resourceSnakeCase}}_model";
+import { {{resourcePascalCase}}CreateInterface } from "../interfaces/{{resourceSnakeCase}}_create_interface";
+import { {{resourcePascalCase}}UpdateInterface } from "../interfaces/{{resourceSnakeCase}}_update_interface";
+
+interface Props {
+	{{resourceCamelCase}}?: {{resourcePascalCase}}Model | null;
+	loading?: boolean;
+}
+
+interface Emits {
+	(e: "save", data: {{resourcePascalCase}}CreateInterface | {{resourcePascalCase}}UpdateInterface): void;
+	(e: "cancel"): void;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+	{{resourceCamelCase}}: null,
+	loading: false,
+});
+
+const emit = defineEmits<Emits>();
+
+const isEditMode = computed(() => !!props.{{resourceCamelCase}});
+
+// Form data
+const formData = ref<Partial<{{resourcePascalCase}}CreateInterface>>({
+{{#each fields}}
+{{#if default}}
+	{{name}}: {{json default}},
+{{else}}
+	{{name}}: {{#if (eq type "boolean")}}false{{else if (isArrayType type)}}[]{{else if (eq type "object")}}{}{{else}}undefined{{/if}},
+{{/if}}
+{{/each}}
+});
+
+// Validation rules
+const rules = {
+{{#each fields}}
+{{#if required}}
+	{{name}}: [(v: any) => !!v || "{{description}} est requis{{feminineSuffix ../resourceLowerCase}}"],
+{{/if}}
+{{/each}}
+};
+
+// Form ref
+const formRef = ref<any>(null);
+
+// Methods
+const resetForm = () => {
+	formData.value = {
+{{#each fields}}
+{{#if default}}
+		{{name}}: {{json default}},
+{{else}}
+		{{name}}: {{#if (eq type "boolean")}}false{{else if (isArrayType type)}}[]{{else if (eq type "object")}}{}{{else}}undefined{{/if}},
+{{/if}}
+{{/each}}
+	};
+	formRef.value?.resetValidation();
+};
+
+const handleCancel = () => {
+	resetForm();
+	emit("cancel");
+};
+
+const handleSave = async () => {
+	const { valid } = await formRef.value.validate();
+
+	if (!valid) {
+		return;
+	}
+
+	if (isEditMode.value) {
+		// Mode édition
+		const updateData: {{resourcePascalCase}}UpdateInterface = {
+			...formData.value,
+		} as {{resourcePascalCase}}UpdateInterface;
+		emit("save", updateData);
+	} else {
+		// Mode création
+		const createData: {{resourcePascalCase}}CreateInterface = {
+			...formData.value,
+		} as {{resourcePascalCase}}CreateInterface;
+		emit("save", createData);
+	}
+};
+
+// Watchers
+watch(
+	() => props.{{resourceCamelCase}},
+	(new{{resourcePascalCase}}) => {
+		if (new{{resourcePascalCase}}) {
+			// Mode édition - charger les données
+			formData.value = {
+{{#each fields}}
+				{{name}}: new{{../resourcePascalCase}}.{{name}},
+{{/each}}
+			};
+		} else {
+			// Mode création - réinitialiser
+			resetForm();
+		}
+	},
+	{ immediate: true }
+);
+
+// Expose resetForm pour l'utilisation externe
+defineExpose({
+	resetForm,
+});
+</script>
+
+<template>
+	<VForm ref="formRef" @submit.prevent="handleSave">
+		<VContainer>
+			<!-- 
+				TODO: Ajouter les champs spécifiques du formulaire ici
+				
+				Exemple pour chaque champ défini dans le YAML:
+{{#each fields}}
+				
+				{{#if (eq type "string")}}
+				<VRow>
+					<VCol cols="12">
+						<VTextField
+							v-model="formData.{{name}}"
+							label="{{description}}"
+							{{#if required}}:rules="rules.{{name}}"{{/if}}
+							density="compact"
+							:disabled="loading"
+							{{#if (not required)}}clearable{{/if}}
+						/>
+					</VCol>
+				</VRow>
+				{{else if (eq type "number")}}
+				<VRow>
+					<VCol cols="12">
+						<VTextField
+							v-model.number="formData.{{name}}"
+							label="{{description}}"
+							type="number"
+							{{#if required}}:rules="rules.{{name}}"{{/if}}
+							density="compact"
+							:disabled="loading"
+							{{#if (not required)}}clearable{{/if}}
+						/>
+					</VCol>
+				</VRow>
+				{{else if (eq type "boolean")}}
+				<VRow>
+					<VCol cols="12">
+						<VCheckbox
+							v-model="formData.{{name}}"
+							label="{{description}}"
+							density="compact"
+							:disabled="loading"
+						/>
+					</VCol>
+				</VRow>
+				{{else if (eq type "Date")}}
+				<VRow>
+					<VCol cols="12">
+						<VTextField
+							v-model="formData.{{name}}"
+							label="{{description}}"
+							type="date"
+							{{#if required}}:rules="rules.{{name}}"{{/if}}
+							density="compact"
+							:disabled="loading"
+							{{#if (not required)}}clearable{{/if}}
+						/>
+					</VCol>
+				</VRow>
+				{{else}}
+				<!-- Type: {{type}} - TODO: Implémenter le champ approprié -->
+				<VRow>
+					<VCol cols="12">
+						<VTextField
+							v-model="formData.{{name}}"
+							label="{{description}}"
+							{{#if required}}:rules="rules.{{name}}"{{/if}}
+							density="compact"
+							:disabled="loading"
+							{{#if (not required)}}clearable{{/if}}
+						/>
+					</VCol>
+				</VRow>
+				{{/if}}
+{{/each}}
+			-->
+
+			<!-- Actions -->
+			<VRow class="mt-4">
+				<VCol cols="12" class="d-flex justify-end gap-2">
+					<VBtn
+						color="grey"
+						variant="text"
+						@click="handleCancel"
+						:disabled="loading"
+					>
+						Annuler
+					</VBtn>
+					<VBtn
+						color="primary"
+						variant="flat"
+						type="submit"
+						:loading="loading"
+					>
+						\{{ isEditMode ? "Modifier" : "Créer" }}
+					</VBtn>
+				</VCol>
+			</VRow>
+		</VContainer>
+	</VForm>
+</template>

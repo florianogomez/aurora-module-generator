@@ -1,0 +1,41 @@
+{
+	"name": "@aurora/generators",
+	"version": "2.1.0",
+	"description": "Multi-framework code generators for crud dashboard projects (Vue, React, Angular...)",
+	"type": "module",
+	"main": "index.js",
+	"bin": {
+		"generate": "./bin/generate.js",
+		"delete-module": "./bin/delete.js"
+	},
+	"scripts": {
+		"generate": "node bin/generate.js",
+		"delete": "node bin/delete.js",
+		"test": "node frameworks/vue/generator.js --dry-run frameworks/vue/test-module.yaml"
+	},
+	"keywords": [
+		"generator",
+		"vue",
+		"react",
+		"angular",
+		"code-generator",
+		"scaffold",
+		"boilerplate",
+		"cli"
+	],
+	"author": "Adébayo Floriano Davidio Sergio Gomez",
+	"license": "MIT",
+	"dependencies": {
+		"handlebars": "^4.7.8",
+		"inquirer": "^12.6.3",
+		"js-yaml": "^4.1.1"
+	},
+	"engines": {
+		"node": ">=18.0.0"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://gitlab.com/sahges/sahges-pay-frontend.git",
+		"directory": "generators"
+	}
+}

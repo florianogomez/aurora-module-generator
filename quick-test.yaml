@@ -1,0 +1,23 @@
+# Test rapide pour valider le générateur
+resource: TestItem
+description: Module de test pour validation du générateur
+extends: ApiResourceInterface
+
+fields:
+  - name: name
+    type: string
+    required: true
+  - name: status
+    type: boolean
+    required: true
+
+filterAttributes:
+  - name: status
+    type: boolean
+    label: "Statut"
+    icon: "ri-checkbox-circle-line"
+
+selector:
+  displayField: name
+  icon: ri-test-tube-line
+  color: success

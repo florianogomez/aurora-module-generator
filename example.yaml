@@ -1,0 +1,190 @@
+# Exemple de spécification YAML pour le générateur de modules
+# Ce fichier démontre toutes les possibilités de configuration
+
+# Nom de la ressource (requis)
+# Doit être en PascalCase
+resource: Product
+
+# Nom du store Pinia (optionnel)
+# Si non spécifié, sera identique à "resource"
+store_name: Product
+
+# Description du module (optionnel)
+description: Module de gestion des produits avec catalogue, prix et inventaire
+
+# Interface étendue (optionnel)
+# Par défaut : ApiResourceInterface
+extends: ApiResourceInterface
+
+# Liste des champs (optionnel)
+fields:
+  # Exemple de champ string requis avec valeur par défaut
+  - name: title
+    type: string
+    required: true
+    description: Titre du produit
+    default: ""
+
+  # Exemple de champ string optionnel
+  - name: description
+    type: string
+    required: false
+    description: Description détaillée du produit
+
+  # Exemple de champ number requis
+  - name: price
+    type: number
+    required: true
+    description: Prix du produit en FCFA
+
+  # Exemple de champ number avec valeur par défaut
+  - name: discount
+    type: number
+    required: false
+    description: Réduction en pourcentage
+    default: 0
+
+  # Exemple de champ boolean
+  - name: inStock
+    type: boolean
+    required: false
+    description: Disponibilité en stock
+    default: true
+
+  # Exemple de champ boolean requis
+  - name: isPublished
+    type: boolean
+    required: true
+    description: Statut de publication
+
+  # Exemple de champ Date
+  - name: releaseDate
+    type: Date
+    required: false
+    description: Date de sortie du produit
+
+  # Exemple de tableau de strings
+  - name: tags
+    type: string[]
+    required: false
+    description: Tags associés au produit
+    default: []
+
+  # Exemple de tableau de numbers
+  - name: ratings
+    type: number[]
+    required: false
+    description: Notes attribuées par les clients
+    default: []
+
+  # Exemple de champ objet
+  - name: metadata
+    type: object
+    required: false
+    description: Métadonnées supplémentaires
+    default: {}
+
+  # Exemple de champ sans valeur par défaut
+  - name: sku
+    type: string
+    required: true
+    description: Code SKU unique du produit
+
+  # Exemple de champ avec type personnalisé
+  - name: categoryId
+    type: string
+    required: true
+    description: Identifiant de la catégorie
+
+  # Exemple de champ number nullable
+  - name: weight
+    type: number
+    required: false
+    description: Poids du produit en grammes
+
+  # Exemple de relation (ID vers une autre ressource)
+  - name: supplierId
+    type: string
+    required: false
+    description: Identifiant du fournisseur
+
+# Attributs pour les filtres de liste (optionnel)
+# Ces attributs seront ajoutés à l'interface <Resource>ListFilterInterface
+# qui extend automatiquement ListApiArgsInterface (search, page)
+#
+# Chaque filtre peut avoir des métadonnées pour l'affichage dans l'UI:
+#   - label: Libellé affiché dans l'interface (optionnel)
+#   - icon: Icône RemixIcon à afficher (optionnel, défaut: ri-filter-line)
+#   - trueLabel/falseLabel: Labels pour les booléens (optionnel)
+#   - enumType: Nom du type enum si applicable (optionnel)
+filterAttributes:
+  - name: isPublished
+    type: boolean
+    label: "Statut de publication"
+    icon: "ri-eye-line"
+    trueLabel: "Publié"
+    falseLabel: "Brouillon"
+
+  - name: inStock
+    type: boolean
+    label: "Disponibilité"
+    icon: "ri-stock-line"
+    trueLabel: "En stock"
+    falseLabel: "Rupture"
+
+  - name: categoryId
+    type: string
+    label: "Catégorie"
+    icon: "ri-folder-line"
+
+  - name: minPrice
+    type: number
+    label: "Prix minimum"
+    icon: "ri-money-dollar-circle-line"
+
+  - name: maxPrice
+    type: number
+    label: "Prix maximum"
+    icon: "ri-money-dollar-circle-line"
+
+  - name: tags
+    type: string[]
+    label: "Tags"
+    icon: "ri-price-tag-3-line"
+
+# Routes de navigation (optionnel)
+# Configuration des routes pour les vues du module
+# Si non spécifié, utilisera les noms par défaut basés sur la ressource
+navigation:
+  list: products # Route pour la liste
+  add: products-form # Route pour l'ajout
+  edit: products-id-edit # Route pour l'édition
+  details: products-id # Route pour les détails
+
+# Configuration du composant Selector (optionnel)
+# Permet de personnaliser l'affichage et le comportement du sélecteur
+selector:
+  displayField: title # Champ principal à afficher (name, title, label...)
+  secondaryField: description # Champ secondaire optionnel
+  icon: ri-shopping-bag-line # Icône RemixIcon à utiliser
+  color: primary # Couleur Vuetify (primary, success, info, warning, error)
+  searchFields: # Champs à utiliser pour la recherche (optionnel)
+    - title
+    - description
+    - sku
+# Notes d'utilisation:
+#
+# Types supportés:
+#   - string
+#   - number
+#   - boolean
+#   - Date
+#   - array (ex: string[], number[])
+#   - object
+#   - Types personnalisés (ex: CategoryInterface)
+#
+# Pour générer ce module:
+#   node generators/module/generator.js generators/module/example.yaml
+#
+# Pour tester sans créer de fichiers:
+#   node generators/module/generator.js --dry-run generators/module/example.yaml

@@ -1,0 +1,20 @@
+import ApiHttpMethod from "@/api/enums/api_http_method_enum"; import ApiError from
+"@/api/errors/ApiError"; import {
+{{resourcePascalCase}}Interface } from "../interfaces/{{resourceKebabCase}}_interface"; import {
+{{resourcePascalCase}}Model } from "../models/{{resourceKebabCase}}_model"; import {
+{{resourcePascalCase}}Route } from "./_{{resourceKebabCase}}_route"; import {
+{{resourcePascalCase}}Store } from "../store"; import {
+{{resourcePascalCase}}ListFilterInterface } from "../interfaces/{{resourceKebabCase}}_list_filter_interface";
+/** * Route de liste
+{{resourcePascalCase}}
+*/ export class
+{{resourcePascalCase}}ListRoute extends
+{{resourcePascalCase}}Route { constructor(private filters:
+{{resourcePascalCase}}ListFilterInterface = {}) { super(`/{{resourcePascalCase}}Route.name}`,
+ApiHttpMethod.GET, filters); } async request() { if (this.isMock) { return this.mock(); } const
+response = await super.request(); if (response instanceof ApiError) return response; return
+(response as
+{{resourcePascalCase}}Interface[]).map((data) => new
+{{resourcePascalCase}}Model(data)); } async mock() { const store:
+{{resourcePascalCase}}Store = await this.store; const results = store.elements.map((e) => new
+{{resourcePascalCase}}Model(e)); return results; } }

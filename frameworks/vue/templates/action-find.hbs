@@ -1,0 +1,11 @@
+
+import {
+{{resourcePascalCase}}Interface } from "../../interfaces/{{resourceKebabCase}}_interface"; import {
+{{resourcePascalCase}}Store } from "../index"; /** * find action * * @param
+{{"{"}}{{resourcePascalCase}}Store} store - The Pinia store instance * @param
+{{"{"}}
+id:
+{{resourcePascalCase}}Interface["id"] }} payload - ID to find * @returns
+{{"{"}}{{resourcePascalCase}}Interface | undefined} */ export function find(store:
+{{resourcePascalCase}}Store, { id }: { id:
+{{resourcePascalCase}}Interface["id"] }) { return store.elements.find((e) => e.id === id); }
