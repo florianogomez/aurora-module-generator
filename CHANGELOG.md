@@ -15,6 +15,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GraphQL support
 - REST API backend generator
 
+## [1.2.8] - 2025-11-13
+
+### 🐛 Bug Fix
+- **Fixed JSDoc in action-getAll.hbs**: Escaped curly braces properly in JSDoc comments
+  - Changed `@param {{ "{" }}{{ "{" }} args }}` to `@param \{{ args }}`
+  - Changed `@param {{pascalCase resource}}Store` to `@param \{{{{pascalCase resource}}Store}}`
+  - Changed `@returns Promise<...>` to `@returns \{{Promise<...>}}`
+  - Consistent with other action templates JSDoc format
+
 ## [1.2.7] - 2025-11-13
 
 ### 🐛 Bug Fix
