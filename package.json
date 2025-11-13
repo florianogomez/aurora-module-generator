@@ -35,7 +35,6 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://gitlab.com/sahges/sahges-pay-frontend.git",
-		"directory": "generators"
+		"url": "git+https://github.com/florianogomez/aurora-module-generator.git"
 	}
 }
