@@ -15,6 +15,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GraphQL support
 - REST API backend generator
 
+## [1.2.3] - 2025-11-13
+
+### 🐛 Bug Fix
+- **Fixed Route Base Import Path**: Added missing underscore in route base file import
+  - Changed from `./{{snakeCase resource}}_route` to `./_{{snakeCase resource}}_route`
+  - The base route file is named `_payment_provider_route.ts` with leading underscore
+  - Affected all 5 route templates
+
 ## [1.2.2] - 2025-11-13
 
 ### 🐛 Critical Fix
