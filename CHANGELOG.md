@@ -15,6 +15,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GraphQL support
 - REST API backend generator
 
+## [1.1.4] - 2025-11-13
+
+### 🐛 Critical Fix
+- **Fixed generator execution context**: Changed `cwd` from `frameworkPath` to `process.cwd()` when spawning generator process
+- This was preventing the configuration file from being loaded when using `npx generate vue module`
+- Configuration now properly loads from user's project root instead of package directory
+
 ## [1.1.3] - 2025-11-13
 
 ### 🐛 Fixes

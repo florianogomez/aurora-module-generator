@@ -179,7 +179,7 @@ async function main() {
 
 	const child = spawn("node", [generatorPath, ...resolvedOptions], {
 		stdio: "inherit",
-		cwd: frameworkPath,
+		cwd: process.cwd(),
 	});
 
 	child.on("exit", (code) => {
