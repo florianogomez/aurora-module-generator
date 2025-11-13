@@ -15,6 +15,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GraphQL support
 - REST API backend generator
 
+## [1.1.0] - 2025-11-13
+
+### ✨ Features
+
+**Configuration System**
+- Added support for project-level configuration files
+- Configurable output directory via `aurora.config.js`, `.aurorarc`, or `aurora.config.json`
+- Custom paths for modules, interfaces, stores, and plugins
+- Automatic configuration loading from project root
+- Backward compatible with default paths
+
+**Configuration Files Supported:**
+- `aurora.config.js` (ESM JavaScript)
+- `aurora.config.mjs` (ESM JavaScript)
+- `aurora.config.json` (JSON)
+- `.aurorarc` (JSON)
+- `.aurorarc.json` (JSON)
+
+**New Files:**
+- `aurora.config.example.js` - Example configuration file
+- `frameworks/vue/config-loader.js` - Configuration loader module
+
+### 🐛 Fixes
+- Fixed module generation path to respect user project structure
+- Fixed issue where modules were generated in wrong directory
+
+### 📚 Documentation
+- Added configuration guide in README.md
+- Added configuration example file
+- Updated usage examples with configuration options
+
+## [1.0.1] - 2025-11-13
+
+### 🐛 Fixes
+- Added 'json' alias for jsonStringify Handlebars helper
+
 ## [1.0.0] - 2025-11-13 - Initial Release 🎉
 
 ### ✨ Features

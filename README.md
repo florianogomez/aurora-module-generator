@@ -176,6 +176,62 @@ delete-module vue Product
 --help           Show help
 ```
 
+## ⚙️ Configuration
+
+Create a configuration file at the root of your project to customize the output directory:
+
+### Option 1: JavaScript Configuration
+
+Create `aurora.config.js`:
+
+```javascript
+export default {
+  // Output directory (relative to project root)
+  outputDir: './src',
+  
+  // Modules directory name
+  modulesDir: 'modules',
+  
+  // Or use full path override
+  // modulesPath: './src/modules',
+  
+  // Generation options
+  options: {
+    overwrite: false,
+    verbose: true,
+  },
+};
+```
+
+### Option 2: JSON Configuration
+
+Create `.aurorarc` or `aurora.config.json`:
+
+```json
+{
+  "outputDir": "./src",
+  "modulesDir": "modules",
+  "options": {
+    "overwrite": false,
+    "verbose": true
+  }
+}
+```
+
+### Configuration Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `outputDir` | `string` | `"./src"` | Output directory for modules |
+| `modulesDir` | `string` | `"modules"` | Modules directory name |
+| `modulesPath` | `string` | `null` | Full path override (if set, overrides outputDir and modulesDir) |
+| `options.overwrite` | `boolean` | `false` | Overwrite existing files |
+| `options.verbose` | `boolean` | `true` | Verbose output |
+
+**Example:** If you set `outputDir: './app'` and `modulesDir: 'features'`, modules will be generated in `./app/features/your-module/`.
+
+Without configuration, modules are generated in `./src/modules/` by default.
+
 ## 📂 What Gets Generated
 
 For a resource called "Product", the generator creates:

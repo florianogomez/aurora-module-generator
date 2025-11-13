@@ -28,6 +28,7 @@ import { fileURLToPath } from "url";
 
 // Configuration et helpers
 import config from "./config.js";
+import { loadAndMergeConfig } from "./config-loader.js";
 import { registerHelpers, pascalCase, camelCase, kebabCase, pluralize } from "./helpers.js";
 
 // Générateurs spécialisés
@@ -51,8 +52,9 @@ registerHelpers(Handlebars);
  * Classe principale du générateur
  */
 class ModuleGenerator {
-	constructor(options = {}) {
-		this.options = { ...config.options, ...options };
+	constructor(options = {}, customConfig = null) {
+		this.config = customConfig || config;
+		this.options = { ...this.config.options, ...options };
 		this.templates = new Map();
 		this.stats = {
 			filesCreated: 0,
@@ -60,14 +62,14 @@ class ModuleGenerator {
 			errors: [],
 		};
 
-		// Initialiser les générateurs spécialisés
-		this.interfacesGenerator = new InterfacesGenerator(this, config);
-		this.modelsGenerator = new ModelsGenerator(this, config);
-		this.routesGenerator = new RoutesGenerator(this, config);
-		this.actionsGenerator = new ActionsGenerator(this, config);
-		this.storeGenerator = new StoreGenerator(this, config);
-		this.composablesGenerator = new ComposablesGenerator(this, config);
-		this.viewsGenerator = new ViewsGenerator(this, config);
+		// Initialiser les générateurs spécialisés avec la config
+		this.interfacesGenerator = new InterfacesGenerator(this, this.config);
+		this.modelsGenerator = new ModelsGenerator(this, this.config);
+		this.routesGenerator = new RoutesGenerator(this, this.config);
+		this.actionsGenerator = new ActionsGenerator(this, this.config);
+		this.storeGenerator = new StoreGenerator(this, this.config);
+		this.composablesGenerator = new ComposablesGenerator(this, this.config);
+		this.viewsGenerator = new ViewsGenerator(this, this.config);
 	}
 
 	/**
@@ -80,7 +82,7 @@ class ModuleGenerator {
 			return this.templates.get(templateName);
 		}
 
-		const templatePath = path.join(config.paths.templates, templateName);
+		const templatePath = path.join(this.config.paths.templates, templateName);
 		if (!fs.existsSync(templatePath)) {
 			throw new Error(`Template non trouvé: ${templatePath}`);
 		}
@@ -379,10 +381,10 @@ class ModuleGenerator {
 		try {
 			const resource = spec.resource;
 			const pluralResource = pluralize(kebabCase(resource));
-			const modulePath = path.join(config.paths.modules, pluralResource);
+			const modulePath = path.join(this.config.paths.modules, pluralResource);
 
-			console.log(`\n${config.messages.rocket} Génération du module "${resource}"`);
-			console.log(`${config.messages.folder} Chemin: ${modulePath}`);
+			console.log(`\n${this.config.messages.rocket} Génération du module "${resource}"`);
+			console.log(`${this.config.messages.folder} Chemin: ${modulePath}`);
 
 			// Vérifier si le module existe
 			if (fs.existsSync(modulePath)) {
@@ -707,8 +709,12 @@ async function main() {
 		process.exit(0);
 	}
 
+	// Charger la configuration utilisateur
+	console.log(`\n${config.messages.package} Chargement de la configuration...`);
+	const finalConfig = await loadAndMergeConfig(config);
+
 	// Génération
-	const generator = new ModuleGenerator(options);
+	const generator = new ModuleGenerator(options, finalConfig);
 	const success = await generator.generate(spec);
 
 	process.exit(success ? 0 : 1);
