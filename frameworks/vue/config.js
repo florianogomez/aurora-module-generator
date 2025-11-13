@@ -12,10 +12,14 @@ const __dirname = path.dirname(__filename);
 export const config = {
 	// Chemins de base
 	paths: {
-		root: path.resolve(__dirname, "../../.."), // Remonter 3 niveaux: vue/ -> frameworks/ -> generators/ -> projet root
+		// Templates restent relatifs au package
 		templates: path.resolve(__dirname, "templates"),
-		modules: path.resolve(__dirname, "../../../src/modules"),
-		resources: path.resolve(__dirname, "../../../resources"),
+		
+		// Chemins de génération relatifs au projet utilisateur (process.cwd())
+		// Ces chemins seront écrasés si une config utilisateur est trouvée
+		root: process.cwd(),
+		modules: path.resolve(process.cwd(), "src/modules"),
+		resources: path.resolve(process.cwd(), "resources"),
 	},
 
 	// Templates disponibles

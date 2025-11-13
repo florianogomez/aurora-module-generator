@@ -15,6 +15,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GraphQL support
 - REST API backend generator
 
+## [1.1.2] - 2025-11-13
+
+### 🐛 Fixes
+- **BREAKING FIX**: Fixed default paths to use project's working directory instead of package directory
+- Modules now generate in user's `./src/modules` by default instead of `node_modules/@florianogomez/src/modules`
+- Configuration paths are now correctly resolved from user's project root
+
 ## [1.1.1] - 2025-11-13
 
 ### 🐛 Fixes
