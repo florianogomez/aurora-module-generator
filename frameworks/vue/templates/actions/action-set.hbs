@@ -1,0 +1,22 @@
+import { {{pascalCase resource}}Store } from "..";
+import { {{camelCase resource}}StoreDefinition } from "../definition";
+
+/**
+ * set{{pascalCase (pluralize resource)}} action
+ *
+ * @param {{"{"}}{{pascalCase resource}}Store} store - The Pinia store instance
+ * @param {Object} [payload={}] - Optional parameters
+ * @returns {Promise<void>}
+ */
+export async function set{{pascalCase (pluralize resource)}}(
+	store: {{pascalCase resource}}Store,
+	payload: { {{camelCase (pluralize resource)}}?: {{pascalCase resource}}Model[] } = {}
+): Promise<void> {
+	store.loading = true;
+	appLogger.info(`[🍍][${store.$id}]: Executing set{{pascalCase (pluralize resource)}}()`);
+
+	store.elements = payload.{{camelCase (pluralize resource)}} || [];
+
+	store.loading = false;
+	appLogger.success(`[🍍][${store.$id}]: set{{pascalCase (pluralize resource)}}() completed`);
+}

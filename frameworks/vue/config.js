@@ -25,52 +25,58 @@ export const config = {
 	// Templates disponibles
 	templates: {
 		// Interfaces
-		interface: "interface.hbs",
-		interfaceCreate: "interface-create.hbs",
-		interfaceUpdate: "interface-update.hbs",
-		interfaceStore: "interface-store.hbs",
-		interfaceListFilter: "interface-list-filter.hbs",
-		interfaceIndex: "interface-index.hbs",
+		interface: "interfaces/interface.hbs",
+		interfaceCreate: "interfaces/interface-create.hbs",
+		interfaceUpdate: "interfaces/interface-update.hbs",
+		interfaceStore: "interfaces/interface-store.hbs",
+		interfaceListFilter: "interfaces/interface-list-filter.hbs",
+		interfaceIndex: "interfaces/interface-index.hbs",
 
 		// Modèle
-		model: "model.hbs",
+		model: "models/model.hbs",
 
 		// Routes API
-		routeBase: "route-base.hbs",
-		routeCreate: "route-create.hbs",
-		routeList: "route-list.hbs",
-		routeFind: "route-find.hbs",
-		routeUpdate: "route-update.hbs",
-		routeDelete: "route-delete.hbs",
+		routeBase: "routes/route-base.hbs",
+		routeCreate: "routes/route-create.hbs",
+		routeList: "routes/route-list.hbs",
+		routeFind: "routes/route-find.hbs",
+		routeUpdate: "routes/route-update.hbs",
+		routeDelete: "routes/route-delete.hbs",
+		routeNavigation: "routes/route-navigation.hbs",
 
 		// Actions du store
-		actionAdd: "action-add.hbs",
-		actionFind: "action-find.hbs",
-		actionUpdate: "action-update.hbs",
-		actionRemove: "action-remove.hbs",
-		actionGetAll: "action-getAll.hbs",
-		actionFindOne: "action-findOne.hbs",
-		actionCreate: "action-create.hbs",
-		actionUpdateOne: "action-updateOne.hbs",
-		actionDelete: "action-delete.hbs",
-		actionIndex: "action-index.hbs",
+		actionAdd: "actions/action-add.hbs",
+		actionFind: "actions/action-find.hbs",
+		actionUpdate: "actions/action-update.hbs",
+		actionRemove: "actions/action-remove.hbs",
+		actionGetAll: "actions/action-getAll.hbs",
+		actionFindOne: "actions/action-findOne.hbs",
+		actionCreate: "actions/action-create.hbs",
+		actionUpdateOne: "actions/action-updateOne.hbs",
+		actionDelete: "actions/action-delete.hbs",
+		actionSet: "actions/action-set.hbs",
+		actionIndex: "store/action-index.hbs",
+
+		// Store
+		storeDefinition: "store/store-definition.hbs",
+		storeGetters: "store/store-getters.hbs",
+		storeIndex: "store/store-index.hbs",
 
 		// Composables
-		composableUseActions: "composable-use-actions.hbs",
-		composableUseFilters: "composable-use-filters.hbs",
+		composableUseActions: "composables/composable-use-actions.hbs",
+		composableUseFilters: "composables/composable-use-filters.hbs",
 
 		// Views
-		routeNavigation: "route-navigation.hbs",
-		viewList: "view-list.hbs",
-		viewAdd: "view-add.hbs",
-		viewEdit: "view-edit.hbs",
+		viewList: "views/view-list.hbs",
+		viewAdd: "views/view-add.hbs",
+		viewEdit: "views/view-edit.hbs",
 
 		// Components
-		componentForm: "component-form.hbs",
-		componentFormDialog: "component-form-dialog.hbs",
-		componentDetailDialog: "component-detail-dialog.hbs",
-		componentFiltersForm: "component-filters-form.hbs",
-		componentSelector: "component-selector.hbs",
+		componentForm: "components/component-form.hbs",
+		componentFormDialog: "components/component-form-dialog.hbs",
+		componentDetailDialog: "components/component-detail-dialog.hbs",
+		componentFiltersForm: "components/component-filters-form.hbs",
+		componentSelector: "components/component-selector.hbs",
 	},
 
 	// Structure des dossiers du module

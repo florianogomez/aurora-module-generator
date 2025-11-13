@@ -1,0 +1,54 @@
+import { {{camelCase resource}}StoreDefinition } from "./definition";
+import { {{camelCase resource}}StoreGetters } from "./getters";
+import { {{camelCase resource}}StoreActions } from "./actions";
+
+const use{{pascalCase resource}}Store = defineStore({{camelCase resource}}StoreDefinition.key, {
+	state: (): {{pascalCase resource}}StoreInterface => structuredClone({{camelCase resource}}StoreDefinition.service.defaults),
+	getters: {{camelCase resource}}StoreGetters,
+	actions: {
+		add(element: {{pascalCase resource}}Interface) {
+			return {{camelCase resource}}StoreActions.add(this, element);
+		},
+		find(id: {{pascalCase resource}}Interface["id"]) {
+			return {{camelCase resource}}StoreActions.find(this, { id });
+		},
+		update(id: {{pascalCase resource}}Interface["id"], element: {{pascalCase resource}}Interface) {
+			return {{camelCase resource}}StoreActions.update(this, { id, data: element });
+		},
+		remove(id: {{pascalCase resource}}Interface["id"]) {
+			return {{camelCase resource}}StoreActions.remove(this, { id });
+		},
+		get{{pascalCase (pluralize resource)}}(args?: ListApiArgsInterface) {
+			return {{camelCase resource}}StoreActions.get{{pascalCase (pluralize resource)}}(this, { args });
+		},
+		find{{pascalCase resource}}(id: {{pascalCase resource}}Interface["id"]) {
+			return {{camelCase resource}}StoreActions.find{{pascalCase resource}}(this, { elementId: id });
+		},
+		create{{pascalCase resource}}(data: {{pascalCase resource}}CreateInterface) {
+			return {{camelCase resource}}StoreActions.create{{pascalCase resource}}(this, { data });
+		},
+		update{{pascalCase resource}}(elementId: {{pascalCase resource}}Interface["id"], data: {{pascalCase resource}}UpdateInterface) {
+			return {{camelCase resource}}StoreActions.update{{pascalCase resource}}(this, { elementId, data });
+		},
+		delete{{pascalCase resource}}(elementId: {{pascalCase resource}}Interface["id"]) {
+			return {{camelCase resource}}StoreActions.delete{{pascalCase resource}}(this, { elementId });
+		},
+		initialize({ reset = false } = {}) {
+			return {{camelCase resource}}StoreActions.initialize(this, { reset });
+		},
+		setLoading(loading: boolean) {
+			return {{camelCase resource}}StoreActions.setLoading(this, loading);
+		},
+		set{{pascalCase (pluralize resource)}}(payload: object) {
+			return {{camelCase resource}}StoreActions.set{{pascalCase (pluralize resource)}}(this, payload);
+		},
+	},
+});
+
+export async function useInitialized{{pascalCase resource}}Store(): Promise<ReturnType<typeof use{{pascalCase resource}}Store>> {
+	const store = use{{pascalCase resource}}Store();
+	if (!store.initialized) await store.initialize({ reset: false });
+	return store;
+}
+
+export type {{pascalCase resource}}Store = ReturnType<typeof use{{pascalCase resource}}Store>;

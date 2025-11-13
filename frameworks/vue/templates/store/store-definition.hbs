@@ -1,0 +1,14 @@
+import { defaultStoreState } from "@/constants";
+import { StoreKeysEnum } from "@/enums";
+import { GenericStoreService } from "@/services/generic_store_service";
+
+export const {{camelCase resource}}StoreDefinition: AppStoreDefinition<{{pascalCase resource}}StoreInterface> = {
+	key: StoreKeysEnum.{{pascalCase resource}},
+	service: new GenericStoreService<{{pascalCase resource}}StoreInterface>({
+		name: StoreKeysEnum.{{pascalCase resource}},
+		defaults: {
+			...defaultStoreState,
+			elements: [],
+		},
+	}),
+};

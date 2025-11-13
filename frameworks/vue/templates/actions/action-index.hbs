@@ -1,0 +1,26 @@
+import { {{camelCase resource}}StoreDefinition } from "../definition";
+import { createBaseStoreActions } from "@/stores/utils/create_base_store_actions";
+import { add } from "./add";
+import { find } from "./find";
+import { update } from "./update";
+import { remove } from "./remove";
+import { get{{pascalCase (pluralize resource)}} } from "./get{{pascalCase (pluralize resource)}}";
+import { find{{pascalCase resource}} } from "./find{{pascalCase resource}}";
+import { create{{pascalCase resource}} } from "./create{{pascalCase resource}}";
+import { update{{pascalCase resource}} } from "./update{{pascalCase resource}}";
+import { delete{{pascalCase resource}} } from "./delete{{pascalCase resource}}";
+import { set{{pascalCase (pluralize resource)}} } from "./set{{pascalCase (pluralize resource)}}";
+
+export const {{camelCase resource}}StoreActions = {
+	set{{pascalCase (pluralize resource)}},
+	...createBaseStoreActions({{camelCase resource}}StoreDefinition.service),
+	add,
+	find,
+	update,
+	remove,
+	get{{pascalCase (pluralize resource)}},
+	find{{pascalCase resource}},
+	create{{pascalCase resource}},
+	update{{pascalCase resource}},
+	delete{{pascalCase resource}},
+};

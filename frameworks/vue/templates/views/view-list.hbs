@@ -1,12 +1,12 @@
 <script setup lang="ts">
 	import { useSelectableList } from "@/composables/useSelectableList"; import {
-	{{pascalCase resource}}Model } from "../models/{{kebabCase resource}}_model"; import { use{{pascalCase
+	{{pascalCase resource}}Model } from "../models/{{snakeCase resource}}_model"; import { use{{pascalCase
 		resource
-	}}Actions } from "../composables/use_{{kebabCase resource}}_actions"; import { useBootstrapToast }
+	}}Actions } from "../composables/use_{{snakeCase resource}}_actions"; import { useBootstrapToast }
 	from "@/composables/useBootstrapToast"; import SanlamAllianzTable from
 	"@/components/SanlamAllianzTable.vue"; import { useSanlamAllianzTable } from
 	"@/composables/useSanlamAllianzTable"; import { use{{pascalCase resource}}Filters } from
-	"../composables/use_{{kebabCase resource}}_filters"; import { ApiError } from "@/api/errors";
+	"../composables/use_{{snakeCase resource}}_filters"; import { ApiError } from "@/api/errors";
 	const emit = defineEmits<{ "row-click": [item:
 	{{pascalCase resource}}Model]; }>(); const { processing: loading,
 	{{camelCase (pluralize resource)}}, get{{pascalCase (pluralize resource)}}, create{{pascalCase

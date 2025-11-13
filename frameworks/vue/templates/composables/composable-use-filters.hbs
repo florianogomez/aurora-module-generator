@@ -1,5 +1,5 @@
 import { computed, readonly, ref } from "vue";
-import { {{pascalCase resource}}ListFilterInterface } from "../interfaces/{{kebabCase resource}}_list_filter_interface";
+import { {{pascalCase resource}}ListFilterInterface } from "../interfaces/{{snakeCase resource}}_list_filter_interface";
 
 export const use{{pascalCase resource}}Filters = () => {
 	const appliedFilters = ref<Partial<{{pascalCase resource}}ListFilterInterface>>({});

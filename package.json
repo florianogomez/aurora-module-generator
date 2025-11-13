@@ -1,6 +1,6 @@
 {
 	"name": "@florianogomez/aurora-generators",
-	"version": "1.1.4",
+	"version": "1.2.0",
 	"description": "Production-ready code generator for modern CRUD applications. Generate complete modules with TypeScript, Vue 3, Pinia, and more in seconds.",
 	"type": "module",
 	"bin": {

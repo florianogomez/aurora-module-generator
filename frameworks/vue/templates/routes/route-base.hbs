@@ -6,7 +6,7 @@ import { {{pascalCase resource}}Store } from "../store";
  * Route de base pour {{pascalCase resource}}
  */
 export class {{pascalCase resource}}Route extends ApiRoute {
-  static name = "{{kebabCase resource}}";
+  static name = "{{kebabCase (pluralize resource)}}";
 
   get store(): Promise<{{pascalCase resource}}Store> {
     return useInitialized{{pascalCase resource}}Store();

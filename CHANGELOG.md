@@ -15,6 +15,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GraphQL support
 - REST API backend generator
 
+## [1.2.0] - 2025-11-13
+
+### ✨ Features
+- **Complete Store Migration to Handlebars**: Migrated entire Pinia store generation to Handlebars templates
+  - New templates: `store-definition.hbs`, `store-getters.hbs`, `store-index.hbs`
+  - Added `action-set.hbs` template for setElements action
+  - Updated `action-index.hbs` with proper imports and structure
+- **Organized Template Structure**: Reorganized all templates into folders matching module structure
+  - `templates/actions/`, `templates/interfaces/`, `templates/models/`, etc.
+  - Easier to navigate and maintain
+  - Config updated to reflect new paths
+
+### 🐛 Critical Fixes
+- **Fixed Import Paths**: Replaced all `kebabCase` with `snakeCase` for file imports
+  - Fixes issue where `payment-provider` generated imports like `payment-provider_interface.ts`
+  - Now correctly generates `payment_provider_interface.ts`
+  - Affects all templates: actions, interfaces, composables, views
+- **Route Name**: Fixed route base template to use `kebabCase(pluralize(resource))` for API route names
+
+### 🔧 Improvements
+- Removed dependency on external `generate-store-full.js` script
+- All store generation now uses consistent Handlebars template system
+- Better alignment with actual generated module structure
+
 ## [1.1.4] - 2025-11-13
 
 ### 🐛 Critical Fix

@@ -1,0 +1,12 @@
+import { {{extends}} } from "@/interfaces/{{extends}}";
+{{#if imports}}
+{{#each imports}}
+import { {{this.name}} } from "{{this.path}}";
+{{/each}}
+{{/if}}
+
+export interface {{pascalCase resource}}Interface extends {{extends}} {
+{{#each fields}}
+	{{name}}{{#unless required}}?{{/unless}}: {{type}};
+{{/each}}
+}
