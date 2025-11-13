@@ -17,6 +17,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.1.2] - 2025-11-13
 
+### ✨ Features
+- Added `generate config` command to display current configuration and resolved paths
+- Shows working directory, generation paths, custom paths, and options
+- Helps debug configuration issues
+
 ### 🐛 Fixes
 - **BREAKING FIX**: Fixed default paths to use project's working directory instead of package directory
 - Modules now generate in user's `./src/modules` by default instead of `node_modules/@florianogomez/src/modules`

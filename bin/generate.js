@@ -23,6 +23,7 @@ const __dirname = dirname(__filename);
 
 const SUPPORTED_FRAMEWORKS = ["vue", "react", "angular"];
 const SUPPORTED_TYPES = ["module"];
+const SPECIAL_COMMANDS = ["config", "show-config"];
 
 function showHelp() {
 	console.log(`
@@ -30,6 +31,7 @@ function showHelp() {
 
 Usage:
   npx generate <framework> <type> [options] [file]
+  npx generate config                    Affiche la configuration
 
 Frameworks:
   vue         Vue 3 + Pinia + Vuetify (disponible)
@@ -38,6 +40,9 @@ Frameworks:
 
 Types:
   module      Génère un module complet (CRUD)
+
+Commands:
+  config      Affiche la configuration actuelle et les chemins résolus
 
 Options:
   --interactive     Mode interactif
@@ -49,6 +54,7 @@ Exemples:
   npx generate vue module resources/product.yaml
   npx generate vue module --interactive
   npx generate vue module --dry-run resources/product.yaml
+  npx generate config
 
 Documentation:
   README.md                     Documentation générale
@@ -62,6 +68,47 @@ async function main() {
 	// Aide
 	if (args.includes("--help") || args.includes("-h") || args.length === 0) {
 		showHelp();
+		process.exit(0);
+	}
+
+	// Commande spéciale: afficher la configuration
+	if (args[0] === "config" || args[0] === "show-config") {
+		const { default: config } = await import("../frameworks/vue/config.js");
+		const { loadAndMergeConfig } = await import("../frameworks/vue/config-loader.js");
+		
+		console.log("\n📦 Configuration Aurora Generator\n");
+		console.log("📂 Répertoire de travail:", process.cwd());
+		
+		const finalConfig = await loadAndMergeConfig(config);
+		
+		console.log("\n🔧 Chemins de génération:");
+		console.log("  Modules:     ", finalConfig.paths.modules);
+		console.log("  Templates:   ", finalConfig.paths.templates);
+		console.log("  Resources:   ", finalConfig.paths.resources);
+		
+		if (finalConfig.userPaths) {
+			console.log("\n📝 Chemins personnalisés (depuis config):");
+			if (finalConfig.userPaths.interfacesIndex) {
+				console.log("  Interfaces:  ", finalConfig.userPaths.interfacesIndex);
+			}
+			if (finalConfig.userPaths.storeKeysEnum) {
+				console.log("  Store Keys:  ", finalConfig.userPaths.storeKeysEnum);
+			}
+			if (finalConfig.userPaths.piniaPlugin) {
+				console.log("  Pinia Plugin:", finalConfig.userPaths.piniaPlugin);
+			}
+		}
+		
+		console.log("\n⚙️  Options:");
+		console.log("  Overwrite:   ", finalConfig.options.overwrite);
+		console.log("  Verbose:     ", finalConfig.options.verbose);
+		console.log("  Dry Run:     ", finalConfig.options.dryRun);
+		
+		console.log("\n💡 Pour modifier la configuration, créez un fichier:");
+		console.log("  - aurora.config.js");
+		console.log("  - aurora.config.json");
+		console.log("  - .aurorarc\n");
+		
 		process.exit(0);
 	}
 
