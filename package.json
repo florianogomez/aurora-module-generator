@@ -1,9 +1,8 @@
 {
-	"name": "@aurora/generators",
+	"name": "@florianogomez/aurora-generators",
 	"version": "1.0.0",
 	"description": "Production-ready code generator for modern CRUD applications. Generate complete modules with TypeScript, Vue 3, Pinia, and more in seconds.",
 	"type": "module",
-	"main": "index.js",
 	"bin": {
 		"generate": "./bin/generate.js",
 		"delete-module": "./bin/delete.js"
@@ -11,7 +10,8 @@
 	"scripts": {
 		"generate": "node bin/generate.js",
 		"delete": "node bin/delete.js",
-		"test": "node frameworks/vue/generator.js --dry-run frameworks/vue/test-module.yaml"
+		"test": "node frameworks/vue/generator.js --dry-run test-module.yaml",
+		"prepublishOnly": "node scripts/pre-publish.js"
 	},
 	"keywords": [
 		"generator",
