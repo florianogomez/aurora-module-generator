@@ -11,7 +11,7 @@ import { {{pascalCase resource}}ListFilterInterface } from "../interfaces/{{snak
  */
 export class {{pascalCase resource}}ListRoute extends {{pascalCase resource}}Route {
 	constructor(private filters: {{pascalCase resource}}ListFilterInterface = {}) {
-		super(`/${{{pascalCase resource}}Route.name}`, ApiHttpMethod.GET, filters);
+		super("/" + {{pascalCase resource}}Route.name, ApiHttpMethod.GET, filters);
 	}
 
 	async request() {

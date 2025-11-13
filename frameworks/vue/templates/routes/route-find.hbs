@@ -11,7 +11,7 @@ import { NotFoundApiError } from "@/api/errors";
  */
 export class {{pascalCase resource}}FindRoute extends {{pascalCase resource}}Route {
 	constructor(private elementId: {{pascalCase resource}}Interface["id"]) {
-		super(`/${{{pascalCase resource}}Route.name}/${elementId}`, ApiHttpMethod.GET, { id: elementId });
+		super("/" + {{pascalCase resource}}Route.name + "/" + elementId, ApiHttpMethod.GET, { id: elementId });
 	}
 
 	async request() {

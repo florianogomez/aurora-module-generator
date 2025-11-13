@@ -11,7 +11,7 @@ import NotFoundApiError from "@/api/errors/NotFoundApiError";
  */
 export class {{pascalCase resource}}DeleteRoute extends {{pascalCase resource}}Route {
 	constructor(private elementId: {{pascalCase resource}}Interface["id"]) {
-		super(`/${{{pascalCase resource}}Route.name}/${elementId}`, ApiHttpMethod.DELETE, { elementId });
+		super("/" + {{pascalCase resource}}Route.name + "/" + elementId, ApiHttpMethod.DELETE, { elementId });
 	}
 
 	async request() {

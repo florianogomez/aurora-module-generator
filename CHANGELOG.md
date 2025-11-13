@@ -15,6 +15,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GraphQL support
 - REST API backend generator
 
+## [1.2.2] - 2025-11-13
+
+### 🐛 Critical Fix
+- **Fixed Handlebars Parse Error in Routes**: Replaced invalid template literal syntax `\`/\${{{pascalCase resource}}Route.name}\`` with string concatenation `"/" + {{pascalCase resource}}Route.name`
+  - Handlebars cannot parse `${ }` inside template literals
+  - Affected all 5 route templates (create, list, find, update, delete)
+  - This was causing "Parse error: Expecting 'CLOSE_UNESCAPED'" during generation
+
+### 📦 Affected Templates
+- `route-create.hbs`
+- `route-list.hbs`
+- `route-find.hbs`
+- `route-update.hbs`
+- `route-delete.hbs`
+
 ## [1.2.1] - 2025-11-13
 
 ### 🐛 Critical Bug Fixes

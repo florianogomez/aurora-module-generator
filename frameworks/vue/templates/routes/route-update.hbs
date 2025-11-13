@@ -15,7 +15,7 @@ export class {{pascalCase resource}}UpdateRoute extends {{pascalCase resource}}R
 		private elementId: {{pascalCase resource}}Interface["id"],
 		public data: {{pascalCase resource}}UpdateInterface
 	) {
-		super(`/${{{pascalCase resource}}Route.name}/${elementId}`, ApiHttpMethod.PUT, data);
+		super("/" + {{pascalCase resource}}Route.name + "/" + elementId, ApiHttpMethod.PUT, data);
 	}
 
 	async request() {

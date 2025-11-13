@@ -12,7 +12,7 @@ import { {{pascalCase resource}}Store } from "../store";
  */
 export class {{pascalCase resource}}CreateRoute extends {{pascalCase resource}}Route {
 	constructor(public data: {{pascalCase resource}}CreateInterface) {
-		super(`/${{{pascalCase resource}}Route.name}`, ApiHttpMethod.POST, data);
+		super("/" + {{pascalCase resource}}Route.name, ApiHttpMethod.POST, data);
 	}
 
 	async request() {
