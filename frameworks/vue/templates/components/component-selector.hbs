@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ApiError } from "@/api/errors";
 import { {{resourcePascalCase}}Model } from "../models/{{resourceSnakeCase}}_model";
-import { use{{resourcePascalCase}}Store } from "../store";
+import { useInitialized{{resourcePascalCase}}Store } from "../store";
+import type { {{resourcePascalCase}}Store } from "../store";
 
 const logger = createLogger("{{resourcePascalCase}}Selector");
 
@@ -49,7 +50,7 @@ const emit = defineEmits<{
 }>();
 
 // Stores
-const {{resourceCamelCase}}Store = use{{resourcePascalCase}}Store();
+const {{resourceCamelCase}}Store = ref<{{resourcePascalCase}}Store | null>(null);
 
 // Refs
 const searchValue = ref("");
@@ -96,11 +97,11 @@ const displayValue = computed(() => {
 
 // Methods
 const search{{resourcePluralPascalCase}} = async (query: string) => {
-	if (isLoading.value) return;
+	if (isLoading.value || !{{resourceCamelCase}}Store.value) return;
 
 	try {
 		isLoading.value = true;
-		const result = await {{resourceCamelCase}}Store.get{{resourcePluralPascalCase}}({
+		const result = await {{resourceCamelCase}}Store.value.get{{resourcePluralPascalCase}}({
 			search: query,
 			page: 1,
 			// TODO: Ajouter d'autres paramètres de filtre si nécessaire
@@ -188,6 +189,11 @@ watch(
 	},
 	{ immediate: true }
 );
+
+// Lifecycle
+onMounted(async () => {
+	{{resourceCamelCase}}Store.value = await useInitialized{{resourcePascalCase}}Store();
+});
 
 // Cleanup
 onUnmounted(() => {

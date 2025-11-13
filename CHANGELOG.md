@@ -15,6 +15,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GraphQL support
 - REST API backend generator
 
+## [1.2.7] - 2025-11-13
+
+### 🐛 Bug Fix
+- **Fixed Component Selector Store Initialization**: Changed to use `useInitialized{{resourcePascalCase}}Store` asynchronously
+  - Store now initialized in `onMounted` lifecycle hook
+  - Store stored in ref with proper type checking
+  - Added null check before store usage in `search{{resourcePluralPascalCase}}` method
+  - Imports both `useInitialized{{resourcePascalCase}}Store` and `{{resourcePascalCase}}Store` type
+  - Prevents potential runtime errors with uninitialized store
+
 ## [1.2.6] - 2025-11-13
 
 ### 🐛 Critical Fix
