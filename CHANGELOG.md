@@ -15,6 +15,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GraphQL support
 - REST API backend generator
 
+## [1.2.9] - 2025-11-13
+
+### 🐛 Bug Fix
+- **Fixed Function Signature in action-getAll.hbs**: Corrected TypeScript destructuring syntax
+  - Changed `{{ "{" }} args }: {{ "{" }} args?: ... } = {{ "{" }}{{ "}" }}` to `{ args }: { args?: ... } = {}`
+  - JSDoc comments remain properly escaped with `\{{` and `\}}`
+  - Only JSDoc should use escaped braces, not TypeScript code
+  - Generates valid TypeScript function signature
+
 ## [1.2.8] - 2025-11-13
 
 ### 🐛 Bug Fix

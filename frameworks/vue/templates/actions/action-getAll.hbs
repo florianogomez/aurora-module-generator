@@ -14,7 +14,7 @@ import { {{pascalCase resource}}ListFilterInterface } from "../../interfaces/{{s
  */
 export async function get{{pluralize (pascalCase resource)}}(
   store: {{pascalCase resource}}Store, 
-  {{ "{" }} args }: {{ "{" }} args?: {{pascalCase resource}}ListFilterInterface } = {{ "{" }}{{ "}" }}
+  { args }: { args?: {{pascalCase resource}}ListFilterInterface } = {}
 ): Promise<{{pascalCase resource}}Model[] | ApiError> {
   const apiRoute = new {{pascalCase resource}}ListRoute(args);
   const result = await apiRoute.request();
