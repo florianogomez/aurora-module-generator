@@ -1,0 +1,27 @@
+# Development files
+.git
+.gitignore
+.DS_Store
+.vscode
+.idea
+
+# Test files
+test-module.yaml
+quick-test.yaml
+
+# Documentation (keep README.md and LICENSE)
+*.log
+*.tmp
+
+# Node modules (will be installed by users)
+node_modules
+
+# CI/CD
+.github
+.gitlab-ci.yml
+.travis.yml
+
+# Editor files
+*.swp
+*.swo
+*~

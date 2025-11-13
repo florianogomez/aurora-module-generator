@@ -1,7 +1,7 @@
 {
 	"name": "@aurora/generators",
-	"version": "2.1.0",
-	"description": "Multi-framework code generators for crud dashboard projects (Vue, React, Angular...)",
+	"version": "1.0.0",
+	"description": "Production-ready code generator for modern CRUD applications. Generate complete modules with TypeScript, Vue 3, Pinia, and more in seconds.",
 	"type": "module",
 	"main": "index.js",
 	"bin": {
@@ -15,15 +15,30 @@
 	},
 	"keywords": [
 		"generator",
-		"vue",
-		"react",
-		"angular",
 		"code-generator",
 		"scaffold",
 		"boilerplate",
-		"cli"
+		"cli",
+		"vue",
+		"vue3",
+		"pinia",
+		"typescript",
+		"crud",
+		"module-generator",
+		"react",
+		"angular",
+		"handlebars",
+		"templates",
+		"automation",
+		"productivity",
+		"composables",
+		"frontend",
+		"fullstack"
 	],
-	"author": "Adébayo Floriano Davidio Sergio Gomez",
+	"author": {
+		"name": "Adébayo Floriano Davidio Sergio Gomez",
+		"email": "contact@florianogomez.dev"
+	},
 	"license": "MIT",
 	"dependencies": {
 		"handlebars": "^4.7.8",
@@ -31,10 +46,22 @@
 		"js-yaml": "^4.1.1"
 	},
 	"engines": {
-		"node": ">=18.0.0"
+		"node": ">=18.0.0",
+		"npm": ">=9.0.0"
 	},
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/florianogomez/aurora-module-generator.git"
-	}
+	},
+	"bugs": {
+		"url": "https://github.com/florianogomez/aurora-module-generator/issues"
+	},
+	"homepage": "https://github.com/florianogomez/aurora-module-generator#readme",
+	"files": [
+		"bin/",
+		"frameworks/",
+		"example.yaml",
+		"README.md",
+		"LICENSE"
+	]
 }
