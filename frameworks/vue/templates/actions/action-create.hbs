@@ -6,9 +6,12 @@ import { {{pascalCase resource}}Store } from "../index";
 
 /**
  * Action create{{pascalCase resource}}
- * Crée un nouveau {{lowerCase resource}}
+ * Crée {{#if (isFeminine resource)}}une nouvelle{{else}}un nouveau{{/if}} {{lowerCase resource}}
  * 
- * @param {{"{"}}{{pascalCase resource}}Store} store - Instance du store Pinia
+ * @param {{pascalCase resource}}Store store - Instance du store Pinia
+ * @param {{ "{" }}{{ "{" }} data }} - Données de création
+ * @returns Promise<{{pascalCase resource}}Model | ApiError>
+ */"{"}}{{pascalCase resource}}Store} store - Instance du store Pinia
  * @param {{ "{" }} data }} - Données de création
  * @returns {Promise<{{pascalCase resource}}Model | ApiError>}
  */

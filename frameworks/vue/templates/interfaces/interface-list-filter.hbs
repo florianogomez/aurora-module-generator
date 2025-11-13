@@ -1,7 +1,5 @@
-export interface
-{{pascalCase resource}}ListFilterInterface extends ListApiArgsInterface {
+export interface {{pascalCase resource}}ListFilterInterface extends ListApiArgsInterface {
 {{#each filterAttributes}}
-	{{name}}?:
-	{{type}};
+	{{name}}?: {{type}};
 {{/each}}
 }

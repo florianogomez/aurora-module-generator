@@ -1,21 +1,40 @@
-import ApiHttpMethod from "@/api/enums/api_http_method_enum"; import ApiError from
-"@/api/errors/ApiError"; import {
-{{resourcePascalCase}}Interface } from "../interfaces/{{resourceKebabCase}}_interface"; import {
-{{resourcePascalCase}}Model } from "../models/{{resourceKebabCase}}_model"; import {
-{{resourcePascalCase}}Route } from "./_{{resourceKebabCase}}_route"; import {
-{{resourcePascalCase}}Store } from "../store"; import { NotFoundApiError } from "@/api/errors"; /**
-* Route de recherche
-{{resourcePascalCase}}
-*/ export class
-{{resourcePascalCase}}FindRoute extends
-{{resourcePascalCase}}Route { constructor(private elementId:
-{{resourcePascalCase}}Interface["id"]) { super(`/{{resourcePascalCase}}Route.name}/${elementId}`,
-ApiHttpMethod.GET, { id: elementId }); } async request() { if (this.isMock) { return this.mock(); }
-const response = await super.request(); if (response instanceof ApiError) return response; return
-new
-{{resourcePascalCase}}Model(response as
-{{resourcePascalCase}}Interface); } async mock() { const store:
-{{resourcePascalCase}}Store = await this.store; const found = store.find(this.elementId); if
-(!found) { return new NotFoundApiError({ message: `{{resourcePascalCase}}
-avec l'ID ${this.elementId} non trouvé`, }); } return new
-{{resourcePascalCase}}Model(found); } }
+import ApiHttpMethod from "@/api/enums/api_http_method_enum";
+import ApiError from "@/api/errors/ApiError";
+import { {{pascalCase resource}}Interface } from "../interfaces/{{snakeCase resource}}_interface";
+import { {{pascalCase resource}}Model } from "../models/{{snakeCase resource}}_model";
+import { {{pascalCase resource}}Route } from "./{{snakeCase resource}}_route";
+import { {{pascalCase resource}}Store } from "../store";
+import { NotFoundApiError } from "@/api/errors";
+
+/**
+ * Route de recherche {{pascalCase resource}}
+ */
+export class {{pascalCase resource}}FindRoute extends {{pascalCase resource}}Route {
+	constructor(private elementId: {{pascalCase resource}}Interface["id"]) {
+		super(`/${{{pascalCase resource}}Route.name}/${elementId}`, ApiHttpMethod.GET, { id: elementId });
+	}
+
+	async request() {
+		if (this.isMock) {
+			return this.mock();
+		}
+
+		const response = await super.request();
+		if (response instanceof ApiError) return response;
+
+		return new {{pascalCase resource}}Model(response as {{pascalCase resource}}Interface);
+	}
+
+	async mock() {
+		const store: {{pascalCase resource}}Store = await this.store;
+		const found = store.find(this.elementId);
+
+		if (!found) {
+			return new NotFoundApiError({
+				message: `{{pascalCase resource}} avec l'ID ${this.elementId} non trouvé`,
+			});
+		}
+
+		return new {{pascalCase resource}}Model(found);
+	}
+}

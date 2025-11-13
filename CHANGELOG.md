@@ -15,6 +15,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GraphQL support
 - REST API backend generator
 
+## [1.2.1] - 2025-11-13
+
+### 🐛 Critical Bug Fixes
+
+#### Models & Composables
+- **Fixed HTML Escaping in Models**: Changed `{{json default}}` to `{{{json default}}}` (triple braces) in `model.hbs` to prevent HTML entity escaping of quotes (`&quot;` → `"`)
+- **Fixed Import Paths in Composables**: Corrected store import from `../stores/{{camelCase resource}}_store` to `../store`
+
+#### Actions JSDoc
+- **Fixed JSDoc Formatting**: Added missing `{{` in JSDoc `@param` tags in 7 action templates
+- **Standardized JSDoc**: Consistent formatting and return types across all actions
+
+#### Routes (Critical)
+- **Fixed Route Templates Naming**: Replaced all `{{resourceKebabCase}}`, `{{resourcePascalCase}}`, `{{resourceCamelCase}}`, `{{resourceLowerCase}}` with proper helpers (`{{snakeCase resource}}`, `{{pascalCase resource}}`, etc.)
+- **Fixed Route Imports**: All route templates now correctly import from `{{snakeCase resource}}_interface` instead of `{{kebabCase resource}}_interface`
+- **Fixed Template String Bug**: Corrected `super(\`/${{{pascalCase resource}}Route.name}\`)` interpolation
+- **Fixed Code Formatting**: Removed broken line breaks in all 5 route templates
+- **Fixed route-create.hbs**: Corrected `return; model;` to `return model;`
+
+### 📦 Affected Templates
+- Models: `model.hbs`
+- Composables: `composable-use-actions.hbs`
+- Actions: 7 templates (getAll, create, update, delete, findOne, set, custom)
+- Routes: 5 templates (create, list, find, update, delete)
+
+### ⚠️ Impact
+These fixes resolve compilation errors in generated code. Previous versions (1.2.0) would generate invalid TypeScript.
+
 ## [1.2.0] - 2025-11-13
 
 ### ✨ Features

@@ -9,7 +9,7 @@ export class {{pascalCase resource}}Model extends ApiResourceModel implements {{
 	constructor(data: {{pascalCase resource}}Interface) {
 		super(data);
 {{#each fields}}
-		this.{{name}} = data.{{name}}{{#if default}} ?? {{json default}}{{/if}};
+		this.{{name}} = data.{{name}}{{#if default}} ?? {{{json default}}}{{/if}};
 {{/each}}
 	}
 

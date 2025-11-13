@@ -1,29 +1,51 @@
-import ApiHttpMethod from "@/api/enums/api_http_method_enum"; import ApiError from
-"@/api/errors/ApiError"; import {
-{{resourcePascalCase}}Interface } from "../interfaces/{{resourceKebabCase}}_interface"; import {
-{{resourcePascalCase}}UpdateInterface } from "../interfaces/{{resourceKebabCase}}_update_interface";
-import {
-{{resourcePascalCase}}Model } from "../models/{{resourceKebabCase}}_model"; import {
-{{resourcePascalCase}}Route } from "./_{{resourceKebabCase}}_route"; import {
-{{resourcePascalCase}}Store } from "../store"; import NotFoundApiError from
-"@/api/errors/NotFoundApiError"; /** * Route de mise à jour
-{{resourcePascalCase}}
-*/ export class
-{{resourcePascalCase}}UpdateRoute extends
-{{resourcePascalCase}}Route { constructor( private elementId:
-{{resourcePascalCase}}Interface["id"], public data:
-{{resourcePascalCase}}UpdateInterface ) { super(`/{{resourcePascalCase}}Route.name}/${elementId}`,
-ApiHttpMethod.PUT, data); } async request() { if (this.isMock) { return this.mock(); } const
-response = await super.request(); if (response instanceof ApiError) return response; return new
-{{resourcePascalCase}}Model(response as
-{{resourcePascalCase}}Interface); } async mock() { const store:
-{{resourcePascalCase}}Store = await this.store; const
-{{resourceCamelCase}}ToUpdate = store.find(this.elementId); if (!{{resourceCamelCase}}ToUpdate) {
-return new NotFoundApiError({ message: `Aucun
-{{resourceLowerCase}}
-trouvé avec l'ID ${this.elementId}.`, }); } const
-{{resourceCamelCase}}Updated = new
-{{resourcePascalCase}}Model({ ...{{resourceCamelCase}}ToUpdate, ...this.data, updated_at: new
-Date().toISOString(), }); store.update(this.elementId,
-{{resourceCamelCase}}Updated.interface); return
-{{resourceCamelCase}}Updated; } }
+import ApiHttpMethod from "@/api/enums/api_http_method_enum";
+import ApiError from "@/api/errors/ApiError";
+import { {{pascalCase resource}}Interface } from "../interfaces/{{snakeCase resource}}_interface";
+import { {{pascalCase resource}}UpdateInterface } from "../interfaces/{{snakeCase resource}}_update_interface";
+import { {{pascalCase resource}}Model } from "../models/{{snakeCase resource}}_model";
+import { {{pascalCase resource}}Route } from "./{{snakeCase resource}}_route";
+import { {{pascalCase resource}}Store } from "../store";
+import NotFoundApiError from "@/api/errors/NotFoundApiError";
+
+/**
+ * Route de mise à jour {{pascalCase resource}}
+ */
+export class {{pascalCase resource}}UpdateRoute extends {{pascalCase resource}}Route {
+	constructor(
+		private elementId: {{pascalCase resource}}Interface["id"],
+		public data: {{pascalCase resource}}UpdateInterface
+	) {
+		super(`/${{{pascalCase resource}}Route.name}/${elementId}`, ApiHttpMethod.PUT, data);
+	}
+
+	async request() {
+		if (this.isMock) {
+			return this.mock();
+		}
+
+		const response = await super.request();
+		if (response instanceof ApiError) return response;
+
+		return new {{pascalCase resource}}Model(response as {{pascalCase resource}}Interface);
+	}
+
+	async mock() {
+		const store: {{pascalCase resource}}Store = await this.store;
+		const {{camelCase resource}}ToUpdate = store.find(this.elementId);
+
+		if (!{{camelCase resource}}ToUpdate) {
+			return new NotFoundApiError({
+				message: `Aucun {{lowerCase resource}} trouvé avec l'ID ${this.elementId}.`,
+			});
+		}
+
+		const {{camelCase resource}}Updated = new {{pascalCase resource}}Model({
+			...{{camelCase resource}}ToUpdate,
+			...this.data,
+			updated_at: new Date().toISOString(),
+		});
+
+		store.update(this.elementId, {{camelCase resource}}Updated.interface);
+		return {{camelCase resource}}Updated;
+	}
+}

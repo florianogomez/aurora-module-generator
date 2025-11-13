@@ -2,9 +2,13 @@ import { {{pascalCase resource}}Store } from "..";
 import { {{camelCase resource}}StoreDefinition } from "../definition";
 
 /**
- * set{{pascalCase (pluralize resource)}} action
- *
- * @param {{"{"}}{{pascalCase resource}}Store} store - The Pinia store instance
+ * Action set{{pascalCase resource}}
+ * Sets/replaces the {{pluralize (lowerCase resource)}} in the store
+ * 
+ * @param {{pascalCase resource}}Store store - The Pinia store instance
+ * @param {{ "{" }}{{ "{" }}{{pluralize (camelCase resource)}}}} - Array of {{pluralize (lowerCase resource)}}
+ * @returns void
+ */"{"}}{{pascalCase resource}}Store} store - The Pinia store instance
  * @param {Object} [payload={}] - Optional parameters
  * @returns {Promise<void>}
  */

@@ -1,0 +1,1 @@
+const routes = createRoutes({ list: "payment-providers", add: "payment-providers-form", edit: "payment-providers-id-edit", details: "payment-providers-id", }); export default routes;

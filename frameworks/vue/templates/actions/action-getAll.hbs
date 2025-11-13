@@ -8,13 +8,13 @@ import { {{pascalCase resource}}ListFilterInterface } from "../../interfaces/{{s
  * Action get{{pluralize (pascalCase resource)}}
  * Récupère la liste des {{pluralize (lowerCase resource)}}
  * 
- * @param {{"{"}}{{pascalCase resource}}Store} store - Instance du store Pinia
- * @param {{ "{" }} args }} - Paramètres de filtrage optionnels
- * @returns {Promise<{{pascalCase resource}}Model[] | ApiError>}
+ * @param {{pascalCase resource}}Store store - Instance du store Pinia
+ * @param {{ "{" }}{{ "{" }} args }} - Paramètres de filtrage optionnels
+ * @returns Promise<{{pascalCase resource}}Model[] | ApiError>
  */
 export async function get{{pluralize (pascalCase resource)}}(
   store: {{pascalCase resource}}Store, 
-  { args }: { args?: {{pascalCase resource}}ListFilterInterface } = {}
+  {{ "{" }} args }: {{ "{" }} args?: {{pascalCase resource}}ListFilterInterface } = {{ "{" }}{{ "}" }}
 ): Promise<{{pascalCase resource}}Model[] | ApiError> {
   const apiRoute = new {{pascalCase resource}}ListRoute(args);
   const result = await apiRoute.request();
