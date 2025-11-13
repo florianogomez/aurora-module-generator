@@ -1,11 +1,17 @@
 
-import {
-{{resourcePascalCase}}Interface } from "../../interfaces/{{resourceKebabCase}}_interface"; import {
-{{resourcePascalCase}}Store } from "../index"; /** * find action * * @param
-{{"{"}}{{resourcePascalCase}}Store} store - The Pinia store instance * @param
-{{"{"}}
-id:
-{{resourcePascalCase}}Interface["id"] }} payload - ID to find * @returns
-{{"{"}}{{resourcePascalCase}}Interface | undefined} */ export function find(store:
-{{resourcePascalCase}}Store, { id }: { id:
-{{resourcePascalCase}}Interface["id"] }) { return store.elements.find((e) => e.id === id); }
+import { {{pascalCase resource}}Interface } from "../../interfaces/{{snakeCase resource}}_interface";
+import { {{pascalCase resource}}Store } from "../index";
+
+/**
+ * find action
+ *
+ * @param {{{pascalCase resource}}Store} store - The Pinia store instance
+ * @param {{ id }} payload - ID to find
+ * @returns {{{pascalCase resource}}Interface | undefined}
+ */
+export function find(
+  store: {{pascalCase resource}}Store,
+  { id }: { id: {{pascalCase resource}}Interface["id"] }
+) {
+  return store.elements.find((e) => e.id === id);
+}

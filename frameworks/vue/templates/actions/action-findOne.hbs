@@ -8,11 +8,8 @@ import { {{pascalCase resource}}Store } from "../index";
  * Action find{{pascalCase resource}}
  * Recherche {{#if (isFeminine resource)}}une{{else}}un{{/if}} {{lowerCase resource}} par son ID
  * 
- * @param {{pascalCase resource}}Store store - Instance du store Pinia
- * @param {{ "{" }}{{ "{" }} elementId }} - ID de l'élément à rechercher
- * @returns Promise<{{pascalCase resource}}Model | ApiError>
- */"{"}}{{pascalCase resource}}Store} store - Instance du store Pinia
- * @param {{ "{" }} elementId }} - ID de l'élément à rechercher
+ * @param {{{pascalCase resource}}Store} store - Instance du store Pinia
+ * @param {{ elementId }} - ID de l'élément à rechercher
  * @returns {Promise<{{pascalCase resource}}Model | ApiError>}
  */
 export async function find{{pascalCase resource}}(

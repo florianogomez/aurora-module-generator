@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ApiError } from "@/api/errors";
 import { {{resourcePascalCase}}Model } from "../models/{{resourceSnakeCase}}_model";
-import { use{{resourcePascalCase}}Store } from "../store/{{resourceSnakeCase}}_store";
+import { use{{resourcePascalCase}}Store } from "../store";
 
 const logger = createLogger("{{resourcePascalCase}}Selector");
 

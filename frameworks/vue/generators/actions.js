@@ -47,6 +47,7 @@ export class ActionsGenerator {
 			{ template: this.config.templates.actionCreate, file: `create${pascalResource}.ts` },
 			{ template: this.config.templates.actionUpdateOne, file: `update${pascalResource}.ts` },
 			{ template: this.config.templates.actionDelete, file: `delete${pascalResource}.ts` },
+			{ template: this.config.templates.actionSet, file: `set${pluralResource}.ts` },
 		];
 
 		apiActions.forEach(({ template, file }) => {

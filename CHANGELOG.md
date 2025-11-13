@@ -15,6 +15,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GraphQL support
 - REST API backend generator
 
+## [1.2.5] - 2025-11-13
+
+### 🐛 Bug Fixes
+- **Fixed Action Templates JSDoc**: Removed duplicated JSDoc blocks with escaping errors in all action templates
+  - Fixed `{{ "{" }}` syntax errors causing malformed documentation
+  - Corrected formatting and indentation in action-add, action-remove, action-update, action-find
+  - Fixed inconsistent variable naming (`resourcePascalCase` → `pascalCase resource`)
+- **Fixed Missing Action Generation**: Added `set{{pascalCase (pluralize resource)}}` action to generation workflow
+  - Template existed but was not being generated
+  - Action is used in store-index.hbs but was missing from actions.js generator
+- **Fixed Unused Import in Composables**: Changed `use{{pascalCase resource}}Store` to `useInitialized{{pascalCase resource}}Store`
+  - Removed unused import that was never called in composable-use-actions.hbs
+- **Fixed Component Selector Store Import**: Changed from `../store/{{resourceSnakeCase}}_store` to `../store`
+  - Aligns with correct import pattern used throughout the codebase
+
 ## [1.2.4] - 2025-11-13
 
 ### 🐛 Bug Fix
