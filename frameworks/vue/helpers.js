@@ -340,6 +340,7 @@ export function registerHelpers(Handlebars) {
 	Handlebars.registerHelper("gt", gt);
 	Handlebars.registerHelper("lt", lt);
 	Handlebars.registerHelper("not", not);
+	Handlebars.registerHelper("json", jsonStringify); // Alias pour jsonStringify
 }
 
 /**
