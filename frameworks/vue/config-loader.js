@@ -37,7 +37,9 @@ export async function loadUserConfig(cwd = process.cwd()) {
 				// Fichiers JavaScript/ESM
 				if (configFile.endsWith(".js") || configFile.endsWith(".mjs")) {
 					const fileUrl = pathToFileURL(configPath).href;
-					const module = await import(fileUrl);
+					// Ajouter un paramètre de cache-busting pour éviter les problèmes de cache ESM
+					const moduleUrl = `${fileUrl}?t=${Date.now()}`;
+					const module = await import(moduleUrl);
 					const config = module.default || module;
 					console.log(`✅ Configuration chargée depuis: ${configFile}`);
 					return config;
