@@ -15,6 +15,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GraphQL support
 - REST API backend generator
 
+## [1.2.4] - 2025-11-13
+
+### 🐛 Bug Fix
+- **Fixed HTML Escaping in component-form.hbs**: Changed `{{json default}}` and `{{description}}` to `{{{json default}}}` and `{{{description}}}` (triple braces)
+  - Prevents HTML entity escaping (`&quot;` → `"`, `&#x27;` → `'`)
+  - Affects default values and field descriptions in form components
+  - Generates valid JavaScript/TypeScript code
+
 ## [1.2.3] - 2025-11-13
 
 ### 🐛 Bug Fix
