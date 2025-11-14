@@ -15,6 +15,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GraphQL support
 - REST API backend generator
 
+## [1.3.0] - 2025-11-14
+
+### 🐛 Bug Fixes
+- **Fixed view-list.hbs Template**: Corrected formatting and added missing `search` variable
+  - Added `search` to destructuring from `use{{pascalCase resource}}Filters()`
+  - Reformatted entire script section for better readability
+  - Fixed indentation and line breaks throughout the template
+  - All imports now on separate lines
+- **Fixed view-edit.hbs Store Import**: Changed import path from `../store/{{snakeCase resource}}_store` to `../store`
+  - Now imports `useInitialized{{pascalCase resource}}Store` instead of `{{pascalCase resource}}Store`
+  - Added proper type import for `{{pascalCase resource}}Store`
+  - Consistent with other view templates and component patterns
+
 ## [1.2.9] - 2025-11-13
 
 ### 🐛 Bug Fix

@@ -1,75 +1,166 @@
 <script setup lang="ts">
-	import { useSelectableList } from "@/composables/useSelectableList"; import {
-	{{pascalCase resource}}Model } from "../models/{{snakeCase resource}}_model"; import { use{{pascalCase
-		resource
-	}}Actions } from "../composables/use_{{snakeCase resource}}_actions"; import { useBootstrapToast }
-	from "@/composables/useBootstrapToast"; import SanlamAllianzTable from
-	"@/components/SanlamAllianzTable.vue"; import { useSanlamAllianzTable } from
-	"@/composables/useSanlamAllianzTable"; import { use{{pascalCase resource}}Filters } from
-	"../composables/use_{{snakeCase resource}}_filters"; import { ApiError } from "@/api/errors";
-	const emit = defineEmits<{ "row-click": [item:
-	{{pascalCase resource}}Model]; }>(); const { processing: loading,
-	{{camelCase (pluralize resource)}}, get{{pascalCase (pluralize resource)}}, create{{pascalCase
-		resource
-	}}, update{{pascalCase resource}}, delete{{pascalCase resource}}, } = use{{pascalCase
-		resource
-	}}Actions(); // Utilisation du composable de filtres centralisés const { filters, activeFilters,
-	hasActiveFilters, filtersApplied, setSearch, resetFilters, applyFilters, removeFilter, } = use{{pascalCase
-		resource
-	}}Filters(); const { selected, selectedCount, allSelected, someSelected, isSelected, toggleSelect,
-	toggleSelectAll, clearSelection, } = useSelectableList<{{pascalCase resource}}Model>(() =>
-	{{camelCase (pluralize resource)}}.value); const { show: notify } = useBootstrapToast(); //
-	Configuration de la table SanlamAllianz const { tableClasses, getStatusBadge, getStatusText,
-	commonHeaders } = useSanlamAllianzTable(); const tableHeaders = commonHeaders.{{camelCase
-		resource
-	}}(); // État du dialog de filtres const showFilterDialog = ref(false); // État du dialog de
-	détails const showDetailDialog = ref(false); const selected{{pascalCase resource}}
-	= ref<{{pascalCase resource}}Model | null>(null); // État du dialog de formulaire
-	(création/édition) const showFormDialog = ref(false); const
-	{{camelCase resource}}ToEdit = ref<{{pascalCase resource}}Model | null>(null); const formLoading =
-	ref(false); // État du dialog de confirmation réutilisable const showConfirmDialog = ref(false);
-	const confirmDialogTitle = ref(""); const confirmDialogMessage = ref(""); const
-	confirmDialogAction = ref<() => any>(async () => {}); const openConfirmDialog = (title: string,
-	message: string, action: () => any) => { confirmDialogTitle.value = title;
-	confirmDialogMessage.value = message; confirmDialogAction.value = action; showConfirmDialog.value
-	= true; }; const executeConfirmAction = async () => { await confirmDialogAction.value();
-	showConfirmDialog.value = false; }; const openFilterDialog = () => { showFilterDialog.value =
-	true; }; const onRowClick = (item:
-	{{pascalCase resource}}Model) => { selected{{pascalCase resource}}.value = item;
-	showDetailDialog.value = true; emit("row-click", item); }; const onEdit{{pascalCase resource}}
-	= (item:
-	{{pascalCase resource}}Model) => {
-	{{camelCase resource}}ToEdit.value = item; showFormDialog.value = true; }; const onAdd{{pascalCase
-		resource
-	}}
-	= () => {
-	{{camelCase resource}}ToEdit.value = null; showFormDialog.value = true; }; const handleSave{{pascalCase
-		resource
-	}}
-	= async (data: any) => { formLoading.value = true; try { if ({{camelCase resource}}ToEdit.value) {
-	// Mode édition const result = await update{{pascalCase resource}}({{camelCase
-		resource
-	}}ToEdit.value.id, data); if (!(result instanceof ApiError)) { showFormDialog.value = false; await
-	get{{pascalCase (pluralize resource)}}(filters.value); } } else { // Mode création const result =
-	await create{{pascalCase resource}}(data); if (!(result instanceof ApiError)) {
-	showFormDialog.value = false; await get{{pascalCase (pluralize resource)}}(filters.value); } } }
-	finally { formLoading.value = false; } }; const deleteSelected = async () => { if
-	(selected.value.length === 0) return; if (selected.value.length > 20) { notify.error("Vous ne
-	pouvez pas supprimer plus de 20 éléments à la fois."); return; } openConfirmDialog( "Supprimer les
-	éléments sélectionnés", `Êtes-vous sûr de vouloir supprimer ${selectedCount.value} élément(s)
-	sélectionné(s) ?`, async () => { for (const element of selected.value) { await delete{{pascalCase
-		resource
-	}}(element.interface); } clearSelection(); // Recharger les données après suppression await get{{pascalCase
-		(pluralize resource)
-	}}(filters.value); } ); }; const onDelete{{pascalCase resource}}
-	= async (item:
-	{{pascalCase resource}}Model) => { openConfirmDialog( "Supprimer
-	{{#if (isFeminine resource)}}la{{else}}le{{/if}}
-	{{lowerCase resource}}", `Êtes-vous sûr de vouloir supprimer cet élément ?`, () => delete{{pascalCase
-		resource
-	}}(item.interface) ); }; const refresh{{pascalCase (pluralize resource)}}
-	= async () => { await get{{pascalCase (pluralize resource)}}(filters.value); }; onMounted(async ()
-	=> { await get{{pascalCase (pluralize resource)}}(filters.value); });
+import { useSelectableList } from "@/composables/useSelectableList";
+import { {{pascalCase resource}}Model } from "../models/{{snakeCase resource}}_model";
+import { use{{pascalCase resource}}Actions } from "../composables/use_{{snakeCase resource}}_actions";
+import { useBootstrapToast } from "@/composables/useBootstrapToast";
+import SanlamAllianzTable from "@/components/SanlamAllianzTable.vue";
+import { useSanlamAllianzTable } from "@/composables/useSanlamAllianzTable";
+import { use{{pascalCase resource}}Filters } from "../composables/use_{{snakeCase resource}}_filters";
+import { ApiError } from "@/api/errors";
+
+const emit = defineEmits<{
+	"row-click": [item: {{pascalCase resource}}Model];
+}>();
+
+const {
+	processing: loading,
+	{{camelCase (pluralize resource)}},
+	get{{pascalCase (pluralize resource)}},
+	create{{pascalCase resource}},
+	update{{pascalCase resource}},
+	delete{{pascalCase resource}},
+} = use{{pascalCase resource}}Actions();
+
+// Utilisation du composable de filtres centralisés
+const {
+	filters,
+	activeFilters,
+	hasActiveFilters,
+	filtersApplied,
+	search,
+	setSearch,
+	resetFilters,
+	applyFilters,
+	removeFilter,
+} = use{{pascalCase resource}}Filters();
+
+const {
+	selected,
+	selectedCount,
+	allSelected,
+	someSelected,
+	isSelected,
+	toggleSelect,
+	toggleSelectAll,
+	clearSelection,
+} = useSelectableList<{{pascalCase resource}}Model>(() => {{camelCase (pluralize resource)}}.value);
+
+const { show: notify } = useBootstrapToast();
+
+// Configuration de la table SanlamAllianz
+const { tableClasses, getStatusBadge, getStatusText, commonHeaders } = useSanlamAllianzTable();
+const tableHeaders = commonHeaders.{{camelCase resource}}();
+
+// État du dialog de filtres
+const showFilterDialog = ref(false);
+
+// État du dialog de détails
+const showDetailDialog = ref(false);
+const selected{{pascalCase resource}} = ref<{{pascalCase resource}}Model | null>(null);
+
+// État du dialog de formulaire (création/édition)
+const showFormDialog = ref(false);
+const {{camelCase resource}}ToEdit = ref<{{pascalCase resource}}Model | null>(null);
+const formLoading = ref(false);
+
+// État du dialog de confirmation réutilisable
+const showConfirmDialog = ref(false);
+const confirmDialogTitle = ref("");
+const confirmDialogMessage = ref("");
+const confirmDialogAction = ref<() => any>(async () => {});
+
+const openConfirmDialog = (title: string, message: string, action: () => any) => {
+	confirmDialogTitle.value = title;
+	confirmDialogMessage.value = message;
+	confirmDialogAction.value = action;
+	showConfirmDialog.value = true;
+};
+
+const executeConfirmAction = async () => {
+	await confirmDialogAction.value();
+	showConfirmDialog.value = false;
+};
+
+const openFilterDialog = () => {
+	showFilterDialog.value = true;
+};
+
+const onRowClick = (item: {{pascalCase resource}}Model) => {
+	selected{{pascalCase resource}}.value = item;
+	showDetailDialog.value = true;
+	emit("row-click", item);
+};
+
+const onEdit{{pascalCase resource}} = (item: {{pascalCase resource}}Model) => {
+	{{camelCase resource}}ToEdit.value = item;
+	showFormDialog.value = true;
+};
+
+const onAdd{{pascalCase resource}} = () => {
+	{{camelCase resource}}ToEdit.value = null;
+	showFormDialog.value = true;
+};
+
+const handleSave{{pascalCase resource}} = async (data: any) => {
+	formLoading.value = true;
+	try {
+		if ({{camelCase resource}}ToEdit.value) {
+			// Mode édition
+			const result = await update{{pascalCase resource}}({{camelCase resource}}ToEdit.value.id, data);
+			if (!(result instanceof ApiError)) {
+				showFormDialog.value = false;
+				await get{{pascalCase (pluralize resource)}}(filters.value);
+			}
+		} else {
+			// Mode création
+			const result = await create{{pascalCase resource}}(data);
+			if (!(result instanceof ApiError)) {
+				showFormDialog.value = false;
+				await get{{pascalCase (pluralize resource)}}(filters.value);
+			}
+		}
+	} finally {
+		formLoading.value = false;
+	}
+};
+
+const deleteSelected = async () => {
+	if (selected.value.length === 0) return;
+
+	if (selected.value.length > 20) {
+		notify.error("Vous ne pouvez pas supprimer plus de 20 éléments à la fois.");
+		return;
+	}
+
+	openConfirmDialog(
+		"Supprimer les éléments sélectionnés",
+		`Êtes-vous sûr de vouloir supprimer ${selectedCount.value} élément(s) sélectionné(s) ?`,
+		async () => {
+			for (const element of selected.value) {
+				await delete{{pascalCase resource}}(element.interface);
+			}
+			clearSelection();
+			// Recharger les données après suppression
+			await get{{pascalCase (pluralize resource)}}(filters.value);
+		}
+	);
+};
+
+const onDelete{{pascalCase resource}} = async (item: {{pascalCase resource}}Model) => {
+	openConfirmDialog(
+		"Supprimer {{#if (isFeminine resource)}}la{{else}}le{{/if}} {{lowerCase resource}}",
+		`Êtes-vous sûr de vouloir supprimer cet élément ?`,
+		() => delete{{pascalCase resource}}(item.interface)
+	);
+};
+
+const refresh{{pascalCase (pluralize resource)}} = async () => {
+	await get{{pascalCase (pluralize resource)}}(filters.value);
+};
+
+onMounted(async () => {
+	await get{{pascalCase (pluralize resource)}}(filters.value);
+});
 </script>
 
 <template>
