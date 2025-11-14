@@ -27,12 +27,14 @@ const {
 	activeFilters,
 	hasActiveFilters,
 	filtersApplied,
-	search,
 	setSearch,
 	resetFilters,
 	applyFilters,
 	removeFilter,
 } = use{{pascalCase resource}}Filters();
+
+// Variable locale pour la recherche
+const search = ref("");
 
 const {
 	selected,
@@ -48,8 +50,24 @@ const {
 const { show: notify } = useBootstrapToast();
 
 // Configuration de la table SanlamAllianz
-const { tableClasses, getStatusBadge, getStatusText, commonHeaders } = useSanlamAllianzTable();
-const tableHeaders = commonHeaders.{{camelCase resource}}();
+const { tableClasses, getStatusBadge, getStatusText } = useSanlamAllianzTable();
+
+// Headers de la table
+const tableHeaders = [
+	{
+		key: "info",
+		title: "Informations",
+		align: "start",
+		sortable: false,
+	},
+	{
+		key: "actions",
+		title: "Actions",
+		align: "end",
+		sortable: false,
+		width: "100px",
+	},
+];
 
 // État du dialog de filtres
 const showFilterDialog = ref(false);
@@ -126,11 +144,6 @@ const handleSave{{pascalCase resource}} = async (data: any) => {
 
 const deleteSelected = async () => {
 	if (selected.value.length === 0) return;
-
-	if (selected.value.length > 20) {
-		notify.error("Vous ne pouvez pas supprimer plus de 20 éléments à la fois.");
-		return;
-	}
 
 	openConfirmDialog(
 		"Supprimer les éléments sélectionnés",

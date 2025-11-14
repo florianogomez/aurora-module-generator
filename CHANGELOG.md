@@ -15,6 +15,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GraphQL support
 - REST API backend generator
 
+## [1.3.1] - 2025-11-14
+
+### 🐛 Bug Fixes
+- **Fixed view-list.hbs Template Issues**:
+  - Corrected `search` variable: now declared as local `ref("")` instead of destructuring from composable
+  - Simplified table headers: generate inline with "Informations" and "Actions" columns
+  - Removed complex validation logic (20 items limit) from `deleteSelected` function
+  - Template now generates simpler, more maintainable code
+
 ## [1.3.0] - 2025-11-14
 
 ### 🐛 Bug Fixes
